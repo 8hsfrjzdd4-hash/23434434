@@ -1,0 +1,1250 @@
+-- ============================================================
+-- Lengyan UI Library · v1.0
+-- 帽子复活者 UI 库（含开场动画 + 窗口框架 + 控件）
+-- ============================================================
+
+local Debris = cloneref and cloneref(game:GetService("Debris")) or game:GetService("Debris")
+local CoreGui = cloneref and cloneref(game:GetService("CoreGui")) or game:GetService("CoreGui")
+local Players = cloneref and cloneref(game:GetService("Players")) or game:GetService("Players")
+local RunService = cloneref and cloneref(game:GetService("RunService")) or game:GetService("RunService")
+local GuiService = cloneref and cloneref(game:GetService("GuiService")) or game:GetService("GuiService")
+local TweenService = cloneref and cloneref(game:GetService("TweenService")) or game:GetService("TweenService")
+local UserInputService = cloneref and cloneref(game:GetService("UserInputService")) or game:GetService("UserInputService")
+local StarterGui = cloneref and cloneref(game:GetService("StarterGui")) or game:GetService("StarterGui")
+local TextService = cloneref and cloneref(game:GetService("TextService")) or game:GetService("TextService")
+
+getcustomasset = getcustomasset or getsynasset
+gethiddengui = get_hidden_gui or gethui
+
+local Player = Players.LocalPlayer
+
+-- ============================================================
+-- Util
+-- ============================================================
+local Util = {}
+
+Util.RandomString = function(length)
+	length = length or math.random(32, 256)
+	local str = ""
+	for _ = 1, length do
+		str ..= string.char(math.random(32, 126))
+	end
+	return str
+end
+
+Util.Instance = function(cl, p)
+	local i = Instance.new(cl)
+	i.Name = Util.RandomString()
+	i.Parent = p
+	return i
+end
+
+Util.LinkDestroyI2C = function(a, b)
+	a.Destroying:Once(function()
+		b:Disconnect()
+	end)
+end
+
+Util.LoopedHSV = function(h, s, v)
+	h %= 1
+	s = math.clamp(s, 0, 1)
+	v = math.clamp(v, 0, 1)
+	return Color3.fromHSV(h, s, v)
+end
+
+Util.Notify = function(text, title)
+	pcall(function()
+		StarterGui:SetCore("SendNotification", {
+			Title = title or "UI",
+			Text = text,
+			Duration = 3,
+		})
+	end)
+end
+
+Util.ForceTextSize = function(inst)
+	if inst:IsA("TextLabel") then
+		local original = inst.TextSize
+		local conn = RunService.PreRender:Connect(function()
+			local size = GuiService.PreferredTextSize.Name
+			if size == "Medium" then inst.TextSize = original
+			elseif size == "Large" then inst.TextSize = original - 4
+			elseif size == "Larger" then inst.TextSize = original - 9
+			elseif size == "Largest" then inst.TextSize = original - 14
+			end
+		end)
+		Util.LinkDestroyI2C(inst, conn)
+	end
+end
+
+Util.GetScreenSize = function()
+	local cam = workspace.CurrentCamera
+	if cam then return cam.ViewportSize end
+	return Vector2.new(512, 512)
+end
+
+Util.UDim2ToVector2Scale = function(x)
+	return Vector2.new(x.X.Scale, x.Y.Scale)
+end
+
+Util.UDim2ToVector2Offset = function(x)
+	return Vector2.new(x.X.Offset, x.Y.Offset)
+end
+
+Util.Vector2ToUDim2Scale = function(x)
+	return UDim2.fromScale(x.X, x.Y)
+end
+
+pcall(makefolder, "LengyanHat")
+pcall(makefolder, "LengyanHat/Assets")
+
+Util.GetCDNAsset = function(filename)
+	local path = "LengyanHat/Assets/" .. filename
+	local s, id = pcall(isfile, path)
+	if s and id then
+		s, id = pcall(getcustomasset, path)
+		if s then return id end
+	end
+	return ""
+end
+
+local function downloadAsset(name)
+	local path = "LengyanHat/Assets/" .. name
+	local s, e = pcall(isfile, path)
+	if s and e then return end
+	pcall(function()
+		writefile(path, game:HttpGet("https://raw.githubusercontent.com/STEVE-916-create/Uhhhhhh/main/uiassets/" .. name))
+	end)
+end
+downloadAsset("lightinursoul.graphic.png")
+downloadAsset("dm_keygen18.ft2.mp3")
+
+-- ============================================================
+-- 帽子（已改成三角形）
+-- ============================================================
+Util.MakeHat = function(color, dur)
+	dur = dur or 8
+	local pivot = Util.Instance("Frame")
+	pivot.AnchorPoint = Vector2.new(0.5, 0.5)
+	pivot.Position = UDim2.new(0.5, 0, 0.5, 0)
+	pivot.Size = UDim2.new(1, 0, 1, 0)
+	pivot.BackgroundTransparency = 1
+	pivot.BorderSizePixel = 0
+
+	local grey = math.max(color.R, color.G, color.B) * 0.5
+
+	-- 三角：多层横条堆叠
+	local layers = 10
+	local bars = {}
+	local barStrokes = {}
+
+	for i = 1, layers do
+		local t = (i - 1) / (layers - 1)   -- 0 底部 → 1 顶部
+		local w = (1 - t) * 0.52 + 0.03
+		local h = 0.52 / layers
+		local y = (i - 1) * h
+
+		local bar = Util.Instance("Frame", pivot)
+		bar.AnchorPoint = Vector2.new(0.5, 1)
+		bar.Position = UDim2.new(0.5, 0, 0.78 - y, 0)
+		bar.Size = UDim2.new(w, 0, h * 1.05, 0)
+		bar.BackgroundColor3 = Color3.new(grey, grey, grey)
+		bar.BorderSizePixel = 0
+		table.insert(bars, bar)
+
+		-- 描边
+		local stroke = Util.Instance("UIStroke", bar)
+		stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+		stroke.LineJoinMode = Enum.LineJoinMode.Round
+		stroke.Thickness = 1
+		stroke.Color = Color3.new(grey, grey, grey)
+		table.insert(barStrokes, stroke)
+	end
+
+	for _, bar in ipairs(bars) do
+		TweenService:Create(bar, TweenInfo.new(dur, Enum.EasingStyle.Linear), { BackgroundColor3 = color }):Play()
+	end
+	for _, stroke in ipairs(barStrokes) do
+		TweenService:Create(stroke, TweenInfo.new(dur, Enum.EasingStyle.Linear), { Color = color }):Play()
+	end
+
+	return pivot
+end
+
+-- ============================================================
+-- 文字渲染
+-- ============================================================
+Util.MakeText = function(text)
+	text = text:upper()
+	local ls = "BCDEIKOPQRSTUVYZ\\_`N^MJ"
+	local lt = ""
+	lt ..= "DDDDD@DFF@@@@@FSFSFSF@@@@@@@@@@@@@@EMMUKKTDD@@@@@DEEEEEDDBBBBBD@@@@@@@@@@@@@@@@@@@DE@@@G@@@@@@@@@DABBDEEI"
+	lt ..= "GJJJJJGDVDDDDSGJAGIISRAAGAARWJJSAAASIIRAARGIIRJJGSAABBDDGJJGJJGGJJHAAG"
+	lt ..= "@DD@DD@@DD@DE@@BDEDB@@@G@G@@@EDBDE@GJABD@D@@@@@@@"
+	lt ..= "DFJSJJJRJJRJJRGJIIIJGRJJJJJRSIIRIISSIIRIIIHIILJJHJJJSJJJGDDDDDGAAAAAJHJKMOMKJIIIIIISJQNJJJJJJPNLJJGJJJJJGRJJRIIIGJJJNGCRJJRMKJGJIGAJGSDDDDDDJJJJJJGJJJJJFDJJJNQJJJJFDFJJJJFDDDDSABDEIS"
+	local pixs = {}
+	local totalsize = 0
+	for i = 0, 6 do
+		local row = {}
+		for j = 1, text:len() do
+			local c = text:byte(j, j)
+			local w = 0
+			if c ~= 0x20 then
+				local k = (c - 33) * 7 + i
+				w = lt:byte(k + 1, k + 1)
+				if w ~= nil and w > 64 then
+					w = ls:byte(w - 64, w - 64) - 65
+				else
+					w = 0
+				end
+			end
+			for k = 0, 5 do
+				local h = (j - 1) * 6 + (4 - k)
+				totalsize = math.max(totalsize, h + 1)
+				local p = (w // math.pow(2, k)) % 2
+				if p > 0 then
+					row[h] = true
+				end
+			end
+		end
+		pixs[i] = row
+	end
+	local pivot = Util.Instance("Frame")
+	pivot.AnchorPoint = Vector2.new(0.5, 0.5)
+	pivot.Position = UDim2.new(0.5, 0, 0.5, 0)
+	pivot.Size = UDim2.new(0, totalsize, 0, 7)
+	pivot.BackgroundTransparency = 1
+	pivot.BorderSizePixel = 0
+	for i = 0, 6 do
+		local row = pixs[i]
+		local olde = nil
+		local olds = 0
+		for j = 0, totalsize - 1 do
+			local pix = row[j]
+			if pix == true then
+				if olde ~= nil then
+					olds += 1
+					olde.Size = UDim2.new(olds / totalsize, 0, 1 / 7, 0)
+				else
+					olde = Util.Instance("Frame", pivot)
+					olde.AnchorPoint = Vector2.new(0, 0)
+					olde.Position = UDim2.new(j / totalsize, 0, i / 7, 0)
+					olde.Size = UDim2.new(1 / totalsize, 0, 1 / 7, 0)
+					olde.BackgroundTransparency = 1
+					olde.BorderSizePixel = 0
+					olds = 1
+				end
+			else
+				olde = nil
+				olds = 0
+			end
+		end
+	end
+	return pivot
+end
+
+Util.SetTextColor = function(text, color, tran)
+	for _, v in text:GetChildren() do
+		v.BackgroundColor3 = color
+		v.BackgroundTransparency = tran
+	end
+end
+
+-- ============================================================
+-- ScreenGui
+-- ============================================================
+local SCREENGUI = Util.Instance("ScreenGui")
+SCREENGUI.IgnoreGuiInset = true
+SCREENGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+SCREENGUI.ClipToDeviceSafeArea = false
+SCREENGUI.ResetOnSpawn = false
+SCREENGUI.ScreenInsets = Enum.ScreenInsets.None
+SCREENGUI.DisplayOrder = 2147483647
+if gethiddengui then
+	SCREENGUI.Parent = gethiddengui()
+else
+	SCREENGUI.Parent = CoreGui
+end
+
+local UIMainFrame = Util.Instance("Frame", SCREENGUI)
+UIMainFrame.AnchorPoint = Vector2.new(0, 0)
+UIMainFrame.Position = UDim2.new(0, 0, 0, 0)
+UIMainFrame.Size = UDim2.new(1, 0, 1, 0)
+UIMainFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+UIMainFrame.BackgroundTransparency = 1
+UIMainFrame.BorderSizePixel = 0
+UIMainFrame.ZIndex = 2147483647
+
+-- ============================================================
+-- 音乐 & 开场动画
+-- ============================================================
+local UISound = {}
+UISound.Music = Util.Instance("Sound", UIMainFrame)
+UISound.Music.Looped = false
+UISound.Music.PlaybackRegionsEnabled = false
+UISound.Music.Volume = 1
+UISound.Music.PlaybackSpeed = 1
+
+local musicPath = "LengyanHat/Assets/dm_keygen18.ft2.mp3"
+local s, id = pcall(isfile, musicPath)
+if s and id then
+	s, id = pcall(getcustomasset, musicPath)
+	if s then
+		UISound.Music.SoundId = id
+		UISound.Music.Name = "Dubmood - Keygen 18"
+	end
+end
+
+UISound.Music.Volume = 0
+UISound.Music:Play()
+local _t0 = os.clock()
+repeat RunService.RenderStepped:Wait() until UISound.Music.IsLoaded or os.clock() - _t0 > 5
+UISound.Music:Stop()
+task.wait()
+UISound.Music:Play()
+UISound.Music.Volume = 1
+UISound.Music.TimePosition = 0
+
+local scrolltexts = {
+	"帽子复活者 出品                                    ",
+	"大家好，欢迎来到我的游戏                          ",
+	"我们的帽子去哪了？                *被语音警告*    ",
+	"向所有帮忙做帽子的朋友致敬                        ",
+	":3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 >:3 :3",
+	"快速开场            快速滚动字幕          你会错过笑点",
+	"喵喵喵喵喵喵喵喵 >:3                              ",
+	"wwwwwwwwwwwwwwwwwww                         草   ",
+	"我要泄露你所有脚本 我要泄露你所有脚本 我要泄露你所有",
+	"fflags 都死啦 哈哈                                ",
+	"想象一下被叫做笨蛋                                ",
+	"即使我闷闷不乐，也不会有什么好事发生！今天努力了，今天就是完美的！",
+	"谁他妈会看这个？？                    大家好      ",
+	"          相信我，界面很好看            它来了    ",
+	"但我克制住思绪，像只没头苍蝇一样一直跑            ",
+	"这就是个开场动画啦                                ",
+	"嘿 冷，为什么这个比 genesis fe 还好？             ",
+	"RCDless 是 Roblox 漏洞利用的未来                  ",
+}
+scrolltexts = scrolltexts[math.random(1, #scrolltexts)]
+
+local fade = TweenService:Create(UIMainFrame, TweenInfo.new(5), { BackgroundTransparency = 0.5 })
+fade:Play()
+
+local scrolltext = Util.MakeText(scrolltexts)
+scrolltext.Parent = UIMainFrame
+scrolltext.ZIndex = 0
+scrolltext.AnchorPoint = Vector2.new(0, 0.5)
+scrolltext.Position = UDim2.new(1.5, 0, 0.5, 0)
+Util.SetTextColor(scrolltext, Color3.new(1, 1, 1), 0.6)
+
+TweenService:Create(scrolltext, TweenInfo.new(5.256, Enum.EasingStyle.Linear), {
+	Position = UDim2.new(1, 0, 0.5, 0),
+	AnchorPoint = Vector2.new(1, 0.5),
+}):Play()
+
+local scrolltextratio = scrolltext.Size.X.Offset / scrolltext.Size.Y.Offset
+local Hat1 = Util.MakeHat(Color3.new(1, 0.7, 0), 4)
+local Hat2 = Util.MakeHat(Color3.new(0.8, 0.4, 0), 4)
+Hat1.ZIndex = 2
+Hat2.ZIndex = 1
+Hat1.Parent = UIMainFrame
+Hat2.Parent = UIMainFrame
+
+local TRI_offset = 0.01
+local TRI_height = 0.5
+local TRI_rot = 0
+local TRI_rotvel = 720
+local TRI_scale = 0
+
+local authorlabel = Util.Instance("TextLabel", UIMainFrame)
+authorlabel.TextScaled = true
+authorlabel.Font = Enum.Font.Arcade
+authorlabel.TextColor3 = Color3.new(1, 1, 1)
+authorlabel.BackgroundColor3 = Color3.new(0, 0, 0)
+authorlabel.BackgroundTransparency = 0
+authorlabel.BorderColor3 = Color3.new(1, 1, 1)
+authorlabel.BorderSizePixel = 8
+authorlabel.AnchorPoint = Vector2.new(0.5, 0.5)
+authorlabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+authorlabel.Size = UDim2.new(0, 0, 0, 0)
+authorlabel.Visible = false
+authorlabel.ZIndex = 3
+local authorlabel_padding = Util.Instance("UIPadding", authorlabel)
+authorlabel_padding.PaddingLeft = UDim.new(0, 10)
+authorlabel_padding.PaddingRight = UDim.new(0, 10)
+authorlabel_padding.PaddingTop = UDim.new(0, 10)
+authorlabel_padding.PaddingBottom = UDim.new(0, 10)
+
+while true do
+	local dt = RunService.Heartbeat:Wait()
+	local t = UISound.Music.TimePosition
+	if t >= 5.256 then break end
+	local screensize = Util.GetScreenSize()
+	local ysize = screensize.Y
+	local height = ysize / 3
+	scrolltext.Size = UDim2.fromOffset(height * scrolltextratio * 0.5, height)
+	TRI_rot = (TRI_rot + TRI_rotvel * dt) % 360
+	TRI_rotvel *= math.exp(-0.25 * dt)
+	Hat1.Size = UDim2.fromOffset(TRI_scale * ysize * 0.8, TRI_scale * ysize * 0.8)
+	if t >= 4.256 then
+		local a = t - 4.256
+		Hat1.Size = Hat1.Size:Lerp(UDim2.fromOffset(160, 160), a)
+		TRI_height = 0.5 + (15 / ysize) * a
+	end
+	Hat2.Size = Hat1.Size
+	Hat1.Position = UDim2.new(0.5, ysize * -TRI_offset, TRI_height, ysize * -TRI_offset)
+	Hat2.Position = UDim2.new(0.5, 0, TRI_height, 0)
+	Hat1.Rotation = TRI_rot
+	Hat2.Rotation = TRI_rot
+	if t < 4.256 then
+		TRI_scale = 1 - ((1 - math.min(1, t / 3)) ^ 2)
+	else
+		local a = t - 4.256
+		TRI_scale = 1 + a * 13
+		if a > 0.5 then
+			Hat1.ZIndex = 5
+			Hat2.ZIndex = 4
+		else
+			Hat1.ZIndex = 2
+			Hat2.ZIndex = 1
+		end
+	end
+	if t < 2.152 then
+		authorlabel.Text = ""
+		authorlabel.Visible = false
+	elseif t < 2.652 then
+		local a = (t - 2.152) / 0.5
+		local z = 20 * ((a * 100) // 20)
+		authorlabel.Text = ""
+		authorlabel.Visible = true
+		authorlabel.Size = UDim2.fromOffset(z, z)
+	elseif t < 4.756 then
+		authorlabel.Text = "冷"
+		authorlabel.Visible = true
+		authorlabel.Size = UDim2.fromOffset(100, 100)
+	else
+		local a = (t - 4.756) / 0.5
+		local x = 20 * ((a * 260 + 100) // 20)
+		local y = 20 * ((math.min(1, a / 0.538) * 140 + 100) // 20)
+		authorlabel.Text = ""
+		authorlabel.Visible = true
+		authorlabel.Size = UDim2.fromOffset(x, y)
+		authorlabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+	end
+end
+
+authorlabel:Destroy()
+Hat1:Destroy()
+Hat2:Destroy()
+scrolltext:Destroy()
+fade:Cancel()
+UIMainFrame.BackgroundTransparency = 1
+
+local flash = Util.Instance("Frame", UIMainFrame)
+flash.AnchorPoint = Vector2.new(0, 0)
+flash.Position = UDim2.new(0, 0, 0, 0)
+flash.Size = UDim2.new(1, 0, 1, 0)
+flash.BackgroundColor3 = Color3.new(1, 1, 1)
+flash.BackgroundTransparency = 0
+flash.BorderSizePixel = 0
+flash.Interactable = false
+flash.ZIndex = 256
+TweenService:Create(flash, TweenInfo.new(1), { BackgroundTransparency = 1 }):Play()
+Debris:AddItem(flash, 1)
+
+-- ============================================================
+-- 窗口框架
+-- ============================================================
+local StylizedObjs = {}
+local function Stylize(obj, options)
+	options = options or {}
+	Util.Instance("UICorner", obj).CornerRadius = UDim.new(0, 5)
+	local Out = Util.Instance("UIStroke", obj)
+	Out.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	Out.Color = Color3.new(1, 1, 1)
+	Out.LineJoinMode = Enum.LineJoinMode.Round
+	Out.Thickness = 1
+	Out.Transparency = 0
+	Out.Enabled = true
+	obj.BackgroundColor3 = Color3.new(0, 0, 0)
+	table.insert(StylizedObjs, { obj = obj, Out = Out })
+end
+
+local function GetUIColor(t)
+	return Util.LoopedHSV(t / 10, 0.8, 1)
+end
+local function GetUIBGColor(t)
+	return Color3.new(0, 0, 0)
+end
+local function UpdateGrads(t)
+	local c = GetUIColor(t)
+	local bgc = GetUIBGColor(t)
+	for _, grad in StylizedObjs do
+		grad.Out.Color = c
+		grad.obj.BackgroundColor3 = bgc
+	end
+end
+
+local UITextColor = Util.Instance("Color3Value")
+UITextColor.Value = Color3.new(1, 1, 1)
+local function RegisterTextLabel(obj)
+	obj.TextColor3 = UITextColor.Value
+	Util.LinkDestroyI2C(obj, UITextColor.Changed:Connect(function(val)
+		obj.TextColor3 = val
+	end))
+end
+
+local _funcrefreshes = {}
+local function AddToRenderStep(func, linkto)
+	table.insert(_funcrefreshes, func)
+	if linkto then
+		linkto.Destroying:Connect(function()
+			local i = table.find(_funcrefreshes, func)
+			if i then table.remove(_funcrefreshes, i) end
+		end)
+	end
+	return func
+end
+local _totalrendertime = 0
+
+-- ============================================================
+-- UI 控件工厂
+-- ============================================================
+local UI = {}
+
+function UI.CreateButton(parent, text, size)
+	local margin = 5
+	local Container = Util.Instance("Frame", parent)
+	Container.AnchorPoint = Vector2.new(0.5, 0)
+	Container.Size = UDim2.new(1, 0, 0, 65536)
+	Container.BackgroundTransparency = 1
+	Container.LayoutOrder = #parent:GetChildren()
+
+	local Button = Util.Instance("TextButton", Container)
+	Button.AnchorPoint = Vector2.new(0, 0)
+	Button.Position = UDim2.new(0, margin, 0, margin // 2)
+	Button.Size = UDim2.new(1, margin * -2, 1, -margin)
+	Button.BackgroundTransparency = 0
+	Button.BackgroundColor3 = Color3.new(1, 1, 1)
+	Button.BorderSizePixel = 0
+	Button.Text = ""
+	Button.AutoButtonColor = true
+
+	local ButtonText = Util.Instance("TextLabel", Button)
+	ButtonText.AnchorPoint = Vector2.new(0, 0.5)
+	ButtonText.Position = UDim2.new(0, 0, 0.5, 0)
+	ButtonText.Size = UDim2.new(1, 0, 1, -margin)
+	ButtonText.BackgroundTransparency = 1
+	ButtonText.RichText = true
+	ButtonText.Font = Enum.Font.Code
+	ButtonText.TextColor3 = Color3.new(1, 1, 1)
+	ButtonText.TextTransparency = 0
+	ButtonText.TextXAlignment = Enum.TextXAlignment.Center
+	ButtonText.TextYAlignment = Enum.TextYAlignment.Center
+	ButtonText.TextWrapped = true
+	ButtonText.TextSize = size or 20
+	RegisterTextLabel(ButtonText)
+	Stylize(Button)
+
+	local function update()
+		local x = parent.AbsoluteSize.X
+		local size = TextService:GetTextSize(ButtonText.ContentText, ButtonText.TextSize, ButtonText.Font, Vector2.new(x - margin * 2, math.huge))
+		Container.Size = UDim2.new(1, 0, 0, size.Y + margin * 2)
+	end
+	ButtonText.Text = text
+	update()
+	ButtonText.Changed:Connect(update)
+	return Button, ButtonText
+end
+
+function UI.CreateSeparator(parent)
+	local Container = Util.Instance("Frame", parent)
+	Container.AnchorPoint = Vector2.new(0.5, 0)
+	Container.Size = UDim2.new(1, 0, 0, 7)
+	Container.BackgroundTransparency = 1
+	Container.LayoutOrder = #parent:GetChildren()
+
+	local Sep = Util.Instance("Frame", Container)
+	Sep.AnchorPoint = Vector2.new(0.5, 0.5)
+	Sep.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Sep.Size = UDim2.new(1, -8, 0, 1)
+	Sep.BackgroundColor3 = UITextColor.Value
+	Sep.BackgroundTransparency = 0.8
+	Sep.BorderSizePixel = 0
+	Util.LinkDestroyI2C(Sep, UITextColor.Changed:Connect(function(val)
+		Sep.BackgroundColor3 = val
+	end))
+	return Sep
+end
+
+-- 开关
+function UI.CreateToggle(parent, text, default, callback)
+	default = default or false
+	callback = callback or function() end
+
+	local margin = 5
+	local Container = Util.Instance("Frame", parent)
+	Container.AnchorPoint = Vector2.new(0.5, 0)
+	Container.Size = UDim2.new(1, 0, 0, 40)
+	Container.BackgroundTransparency = 1
+	Container.LayoutOrder = #parent:GetChildren()
+
+	local Row = Util.Instance("TextButton", Container)
+	Row.AnchorPoint = Vector2.new(0, 0)
+	Row.Position = UDim2.new(0, margin, 0, margin // 2)
+	Row.Size = UDim2.new(1, margin * -2, 1, -margin)
+	Row.BackgroundColor3 = Color3.new(1, 1, 1)
+	Row.BorderSizePixel = 0
+	Row.Text = ""
+	Row.AutoButtonColor = false
+	Stylize(Row)
+
+	local Label = Util.Instance("TextLabel", Row)
+	Label.AnchorPoint = Vector2.new(0, 0.5)
+	Label.Position = UDim2.new(0, 10, 0.5, 0)
+	Label.Size = UDim2.new(1, -60, 1, 0)
+	Label.BackgroundTransparency = 1
+	Label.Font = Enum.Font.Code
+	Label.TextColor3 = Color3.new(1, 1, 1)
+	Label.TextSize = 18
+	Label.TextXAlignment = Enum.TextXAlignment.Left
+	Label.Text = text
+	RegisterTextLabel(Label)
+
+	local SwitchBg = Util.Instance("Frame", Row)
+	SwitchBg.AnchorPoint = Vector2.new(1, 0.5)
+	SwitchBg.Position = UDim2.new(1, -10, 0.5, 0)
+	SwitchBg.Size = UDim2.new(0, 36, 0, 18)
+	SwitchBg.BackgroundColor3 = Color3.new(1, 1, 1)
+	SwitchBg.BorderSizePixel = 0
+	Stylize(SwitchBg)
+	Util.Instance("UICorner", SwitchBg).CornerRadius = UDim.new(1, 0)
+
+	local Knob = Util.Instance("Frame", SwitchBg)
+	Knob.AnchorPoint = Vector2.new(0, 0.5)
+	Knob.Position = default and UDim2.new(1, -16, 0.5, 0) or UDim2.new(0, 2, 0.5, 0)
+	Knob.Size = UDim2.new(0, 14, 0, 14)
+	Knob.BackgroundColor3 = Color3.new(1, 1, 1)
+	Knob.BorderSizePixel = 0
+	Util.Instance("UICorner", Knob).CornerRadius = UDim.new(1, 0)
+	Util.LinkDestroyI2C(Knob, UITextColor.Changed:Connect(function(val)
+		Knob.BackgroundColor3 = val
+	end))
+
+	local state = default
+	local function update()
+		TweenService:Create(Knob, TweenInfo.new(0.18), {
+			Position = state and UDim2.new(1, -16, 0.5, 0) or UDim2.new(0, 2, 0.5, 0),
+		}):Play()
+		SwitchBg.BackgroundTransparency = state and 0.5 or 0
+	end
+	update()
+
+	Row.Activated:Connect(function()
+		state = not state
+		update()
+		pcall(callback, state)
+	end)
+
+	return {
+		Set = function(v)
+			state = v and true or false
+			update()
+			pcall(callback, state)
+		end,
+		Get = function() return state end,
+	}
+end
+
+-- 滑块
+function UI.CreateSlider(parent, text, min, max, default, callback)
+	min = min or 0
+	max = max or 100
+	default = default or min
+	callback = callback or function() end
+
+	local margin = 5
+	local Container = Util.Instance("Frame", parent)
+	Container.AnchorPoint = Vector2.new(0.5, 0)
+	Container.Size = UDim2.new(1, 0, 0, 52)
+	Container.BackgroundTransparency = 1
+	Container.LayoutOrder = #parent:GetChildren()
+
+	local Back = Util.Instance("Frame", Container)
+	Back.AnchorPoint = Vector2.new(0, 0)
+	Back.Position = UDim2.new(0, margin, 0, margin // 2)
+	Back.Size = UDim2.new(1, margin * -2, 1, -margin)
+	Back.BackgroundColor3 = Color3.new(1, 1, 1)
+	Back.BorderSizePixel = 0
+	Stylize(Back)
+
+	local Label = Util.Instance("TextLabel", Back)
+	Label.Position = UDim2.new(0, 10, 0, 6)
+	Label.Size = UDim2.new(1, -70, 0, 18)
+	Label.BackgroundTransparency = 1
+	Label.Font = Enum.Font.Code
+	Label.TextColor3 = Color3.new(1, 1, 1)
+	Label.TextSize = 16
+	Label.TextXAlignment = Enum.TextXAlignment.Left
+	Label.Text = text
+	RegisterTextLabel(Label)
+
+	local ValueLabel = Util.Instance("TextLabel", Back)
+	ValueLabel.AnchorPoint = Vector2.new(1, 0)
+	ValueLabel.Position = UDim2.new(1, -10, 0, 6)
+	ValueLabel.Size = UDim2.new(0, 60, 0, 18)
+	ValueLabel.BackgroundTransparency = 1
+	ValueLabel.Font = Enum.Font.Code
+	ValueLabel.TextColor3 = Color3.new(1, 1, 1)
+	ValueLabel.TextSize = 16
+	ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
+	ValueLabel.Text = tostring(default)
+	RegisterTextLabel(ValueLabel)
+
+	local Bar = Util.Instance("Frame", Back)
+	Bar.Position = UDim2.new(0, 10, 0, 32)
+	Bar.Size = UDim2.new(1, -20, 0, 10)
+	Bar.BackgroundColor3 = Color3.new(1, 1, 1)
+	Bar.BackgroundTransparency = 0.7
+	Bar.BorderSizePixel = 0
+	Util.Instance("UICorner", Bar).CornerRadius = UDim.new(1, 0)
+
+	local pct = (default - min) / (max - min)
+	local Fill = Util.Instance("Frame", Bar)
+	Fill.Size = UDim2.new(pct, 0, 1, 0)
+	Fill.BackgroundColor3 = UITextColor.Value
+	Fill.BorderSizePixel = 0
+	Util.Instance("UICorner", Fill).CornerRadius = UDim.new(1, 0)
+	Util.LinkDestroyI2C(Fill, UITextColor.Changed:Connect(function(val)
+		Fill.BackgroundColor3 = val
+	end))
+
+	local Knob = Util.Instance("Frame", Bar)
+	Knob.AnchorPoint = Vector2.new(0.5, 0.5)
+	Knob.Position = UDim2.new(pct, 0, 0.5, 0)
+	Knob.Size = UDim2.new(0, 14, 0, 14)
+	Knob.BackgroundColor3 = Color3.new(1, 1, 1)
+	Knob.BorderSizePixel = 0
+	Util.Instance("UICorner", Knob).CornerRadius = UDim.new(1, 0)
+	Stylize(Knob)
+
+	local dragging = false
+	local currentValue = default
+	local function setFromX(x)
+		local ax = Bar.AbsolutePosition.X
+		local aw = math.max(1, Bar.AbsoluteSize.X)
+		local t = math.clamp((x - ax) / aw, 0, 1)
+		local v = math.floor(min + (max - min) * t + 0.5)
+		local p = (v - min) / (max - min)
+		Fill.Size = UDim2.new(p, 0, 1, 0)
+		Knob.Position = UDim2.new(p, 0, 0.5, 0)
+		ValueLabel.Text = tostring(v)
+		currentValue = v
+		pcall(callback, v)
+	end
+
+	local Hit = Util.Instance("TextButton", Back)
+	Hit.Position = UDim2.new(0, 0, 0, 22)
+	Hit.Size = UDim2.new(1, 0, 0, 30)
+	Hit.BackgroundTransparency = 1
+	Hit.Text = ""
+	Hit.ZIndex = 5
+	Hit.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			setFromX(input.Position.X)
+		end
+	end)
+	UserInputService.InputChanged:Connect(function(input)
+		if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+			setFromX(input.Position.X)
+		end
+	end)
+	UserInputService.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = false
+		end
+	end)
+
+	return {
+		Set = function(v)
+			local p = (math.clamp(v, min, max) - min) / (max - min)
+			Fill.Size = UDim2.new(p, 0, 1, 0)
+			Knob.Position = UDim2.new(p, 0, 0.5, 0)
+			ValueLabel.Text = tostring(v)
+			currentValue = v
+			pcall(callback, v)
+		end,
+		Get = function() return currentValue end,
+	}
+end
+
+-- 下拉框
+function UI.CreateDropdown(parent, text, options, callback)
+	options = options or {}
+	callback = callback or function() end
+
+	local margin = 5
+	local Container = Util.Instance("Frame", parent)
+	Container.AnchorPoint = Vector2.new(0.5, 0)
+	Container.Size = UDim2.new(1, 0, 0, 36)
+	Container.BackgroundTransparency = 1
+	Container.LayoutOrder = #parent:GetChildren()
+	Container.ClipsDescendants = true
+
+	local Back = Util.Instance("TextButton", Container)
+	Back.AnchorPoint = Vector2.new(0, 0)
+	Back.Position = UDim2.new(0, margin, 0, margin // 2)
+	Back.Size = UDim2.new(1, margin * -2, 1, -margin)
+	Back.BackgroundColor3 = Color3.new(1, 1, 1)
+	Back.BorderSizePixel = 0
+	Back.Text = ""
+	Back.AutoButtonColor = false
+	Stylize(Back)
+
+	local Label = Util.Instance("TextLabel", Back)
+	Label.AnchorPoint = Vector2.new(0, 0.5)
+	Label.Position = UDim2.new(0, 10, 0.5, 0)
+	Label.Size = UDim2.new(1, -50, 1, 0)
+	Label.BackgroundTransparency = 1
+	Label.Font = Enum.Font.Code
+	Label.TextColor3 = Color3.new(1, 1, 1)
+	Label.TextSize = 18
+	Label.TextXAlignment = Enum.TextXAlignment.Left
+	Label.Text = text
+	RegisterTextLabel(Label)
+
+	local Arrow = Util.Instance("TextLabel", Back)
+	Arrow.AnchorPoint = Vector2.new(1, 0.5)
+	Arrow.Position = UDim2.new(1, -8, 0.5, 0)
+	Arrow.Size = UDim2.new(0, 20, 1, 0)
+	Arrow.BackgroundTransparency = 1
+	Arrow.Font = Enum.Font.Code
+	Arrow.TextColor3 = Color3.new(1, 1, 1)
+	Arrow.TextSize = 16
+	Arrow.Text = "▼"
+	RegisterTextLabel(Arrow)
+
+	local List = Util.Instance("Frame", Container)
+	List.Position = UDim2.new(0, margin, 0, 36)
+	List.Size = UDim2.new(1, margin * -2, 0, 0)
+	List.BackgroundTransparency = 1
+	List.ClipsDescendants = true
+
+	local Layout = Util.Instance("UIListLayout", List)
+	Layout.FillDirection = Enum.FillDirection.Vertical
+	Layout.SortOrder = Enum.SortOrder.LayoutOrder
+	Layout.Padding = UDim.new(0, 3)
+
+	local optionButtons = {}
+	local isOpen = false
+	local currentValue = nil
+
+	local function refreshOptions(newOptions)
+		for _, b in ipairs(optionButtons) do
+			b:Destroy()
+		end
+		optionButtons = {}
+		options = newOptions or options
+
+		for i, opt in ipairs(options) do
+			local Ob = Util.Instance("TextButton", List)
+			Ob.Size = UDim2.new(1, 0, 0, 26)
+			Ob.BackgroundColor3 = Color3.new(1, 1, 1)
+			Ob.BorderSizePixel = 0
+			Ob.Text = opt
+			Ob.Font = Enum.Font.Code
+			Ob.TextColor3 = Color3.new(1, 1, 1)
+			Ob.TextSize = 16
+			Ob.AutoButtonColor = false
+			Ob.LayoutOrder = i
+			Stylize(Ob)
+
+			Ob.MouseEnter:Connect(function()
+				Ob.BackgroundTransparency = 0.4
+			end)
+			Ob.MouseLeave:Connect(function()
+				Ob.BackgroundTransparency = 0
+			end)
+			Ob.Activated:Connect(function()
+				Label.Text = text .. ": " .. opt
+				currentValue = opt
+				pcall(callback, opt)
+				-- 关闭
+				isOpen = false
+				Arrow.Text = "▼"
+				TweenService:Create(Container, TweenInfo.new(0.2), { Size = UDim2.new(1, 0, 0, 36) }):Play()
+				task.wait(0.2)
+				List.Size = UDim2.new(1, margin * -2, 0, 0)
+				Container.ClipsDescendants = true
+			end)
+			table.insert(optionButtons, Ob)
+		end
+	end
+
+	refreshOptions(options)
+
+	local function toggle()
+		isOpen = not isOpen
+		if isOpen then
+			Container.ClipsDescendants = false
+			local h = 36 + 6 + (#options * 29)
+			List.Size = UDim2.new(1, margin * -2, 0, #options * 29)
+			Container.Size = UDim2.new(1, 0, 0, h)
+			Arrow.Text = "▲"
+		else
+			Arrow.Text = "▼"
+			TweenService:Create(Container, TweenInfo.new(0.2), { Size = UDim2.new(1, 0, 0, 36) }):Play()
+			task.wait(0.2)
+			List.Size = UDim2.new(1, margin * -2, 0, 0)
+			Container.ClipsDescendants = true
+		end
+	end
+
+	Back.Activated:Connect(toggle)
+
+	return {
+		Refresh = refreshOptions,
+		Get = function() return currentValue end,
+	}
+end
+
+-- 文本框
+function UI.CreateTextbox(parent, placeholder, callback)
+	callback = callback or function() end
+
+	local margin = 5
+	local Container = Util.Instance("Frame", parent)
+	Container.AnchorPoint = Vector2.new(0.5, 0)
+	Container.Size = UDim2.new(1, 0, 0, 36)
+	Container.BackgroundTransparency = 1
+	Container.LayoutOrder = #parent:GetChildren()
+
+	local Back = Util.Instance("Frame", Container)
+	Back.AnchorPoint = Vector2.new(0, 0)
+	Back.Position = UDim2.new(0, margin, 0, margin // 2)
+	Back.Size = UDim2.new(1, margin * -2, 1, -margin)
+	Back.BackgroundColor3 = Color3.new(1, 1, 1)
+	Back.BorderSizePixel = 0
+	Stylize(Back)
+
+	local Box = Util.Instance("TextBox", Back)
+	Box.Position = UDim2.new(0, 10, 0, 0)
+	Box.Size = UDim2.new(1, -20, 1, 0)
+	Box.BackgroundTransparency = 1
+	Box.Font = Enum.Font.Code
+	Box.TextColor3 = Color3.new(1, 1, 1)
+	Box.TextSize = 16
+	Box.Text = ""
+	Box.PlaceholderText = placeholder or "输入..."
+	Box.PlaceholderColor3 = Color3.new(0.6, 0.6, 0.6)
+	Box.TextXAlignment = Enum.TextXAlignment.Left
+	Box.ClearTextOnFocus = false
+	RegisterTextLabel(Box)
+
+	Box.FocusLost:Connect(function(enter)
+		pcall(callback, Box.Text, enter)
+	end)
+
+	return {
+		Get = function() return Box.Text end,
+		Set = function(v) Box.Text = tostring(v) end,
+	}
+end
+
+-- 标签
+function UI.CreateLabel(parent, text, size)
+	local margin = 5
+	local Container = Util.Instance("Frame", parent)
+	Container.AnchorPoint = Vector2.new(0.5, 0)
+	Container.Size = UDim2.new(1, 0, 0, 24)
+	Container.BackgroundTransparency = 1
+	Container.LayoutOrder = #parent:GetChildren()
+
+	local Label = Util.Instance("TextLabel", Container)
+	Label.AnchorPoint = Vector2.new(0, 0.5)
+	Label.Position = UDim2.new(0, margin, 0.5, 0)
+	Label.Size = UDim2.new(1, margin * -2, 1, 0)
+	Label.BackgroundTransparency = 1
+	Label.Font = Enum.Font.Code
+	Label.TextColor3 = Color3.new(1, 1, 1)
+	Label.TextSize = size or 16
+	Label.TextXAlignment = Enum.TextXAlignment.Left
+	Label.Text = text
+	RegisterTextLabel(Label)
+
+	return Label
+end
+
+-- ============================================================
+-- 窗口对象
+-- ============================================================
+local Window = {}
+Window.__index = Window
+
+function Window:_createUI(config)
+	config = config or {}
+	local title = config.Title or "UI"
+	local width = config.Width or 360
+	local height = config.Height or 240
+
+	local UIMainWindow = Util.Instance("Frame", UIMainFrame)
+	UIMainWindow.Active = true
+	UIMainWindow.AnchorPoint = Vector2.new(0.5, 0.5)
+	UIMainWindow.Position = UDim2.new(0.5, 0, 0.5, 0)
+	UIMainWindow.Size = UDim2.new(0, width, 0, height)
+	UIMainWindow.BackgroundColor3 = Color3.new(1, 1, 1)
+	UIMainWindow.BorderSizePixel = 0
+	Stylize(UIMainWindow)
+
+	local TopBarFrame = Util.Instance("Frame", UIMainWindow)
+	TopBarFrame.Position = UDim2.new(0, 0, 0, 0)
+	TopBarFrame.Size = UDim2.new(1, 0, 0, 30)
+	TopBarFrame.BackgroundColor3 = Color3.new(1, 1, 1)
+	TopBarFrame.BorderSizePixel = 0
+	TopBarFrame.ClipsDescendants = true
+	TopBarFrame.ZIndex = 1
+	Stylize(TopBarFrame)
+
+	local TopBarText = Util.Instance("TextLabel", TopBarFrame)
+	TopBarText.AnchorPoint = Vector2.new(0, 0.5)
+	TopBarText.Position = UDim2.new(0, 8, 0.5, 0)
+	TopBarText.Size = UDim2.new(1, -35, 1, 0)
+	TopBarText.BackgroundTransparency = 1
+	TopBarText.ClipsDescendants = true
+	TopBarText.Font = Enum.Font.Code
+	TopBarText.TextColor3 = Color3.new(1, 1, 1)
+	TopBarText.TextSize = 20
+	TopBarText.TextXAlignment = Enum.TextXAlignment.Left
+	TopBarText.Text = title
+	TopBarText.RichText = true
+	RegisterTextLabel(TopBarText)
+	Util.ForceTextSize(TopBarText)
+
+	local TopBarClose = Util.Instance("TextButton", TopBarFrame)
+	TopBarClose.AnchorPoint = Vector2.new(1, 0)
+	TopBarClose.Position = UDim2.new(1, 0, 0, 0)
+	TopBarClose.Size = UDim2.new(0, 30, 1, 0)
+	TopBarClose.BackgroundTransparency = 1
+	TopBarClose.Text = ""
+	do
+		local A = Util.Instance("Frame", TopBarClose)
+		A.AnchorPoint = Vector2.new(0.5, 0.5)
+		A.Position = UDim2.new(0.5, 0, 0.5, 0)
+		A.Size = UDim2.new(0, 16, 0, 2)
+		A.BackgroundColor3 = UITextColor.Value
+		A.BorderSizePixel = 0
+		A.Name = "A"
+		A = Util.Instance("Frame", A)
+		A.AnchorPoint = Vector2.new(0.5, 0.5)
+		A.Position = UDim2.new(0.5, 0, 0.5, 0)
+		A.Size = UDim2.new(0, 2, 0, 0)
+		A.BackgroundColor3 = UITextColor.Value
+		A.BorderSizePixel = 0
+		A.Name = "B"
+		UITextColor.Changed:Connect(function(val)
+			TopBarClose.A.BackgroundColor3 = val
+			TopBarClose.A.B.BackgroundColor3 = val
+		end)
+	end
+
+	local WindowContent = Util.Instance("Frame", UIMainWindow)
+	WindowContent.Position = UDim2.new(0, 0, 0, 30)
+	WindowContent.Size = UDim2.new(1, 0, 1, -35)
+	WindowContent.BackgroundTransparency = 1
+	WindowContent.ClipsDescendants = true
+	WindowContent.ZIndex = 0
+
+	local Scroll = Util.Instance("ScrollingFrame", WindowContent)
+	Scroll.AnchorPoint = Vector2.new(0.5, 0.5)
+	Scroll.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Scroll.Size = UDim2.new(1, 0, 1, 0)
+	Scroll.BackgroundTransparency = 1
+	Scroll.BorderSizePixel = 0
+	Scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+	Scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+	Scroll.ScrollingDirection = Enum.ScrollingDirection.Y
+	Scroll.ScrollBarThickness = 3
+	Scroll.ScrollBarImageColor3 = UITextColor.Value
+	Scroll.ScrollBarImageTransparency = 0.5
+
+	local Pad = Util.Instance("UIPadding", Scroll)
+	Pad.PaddingTop = UDim.new(0, 5)
+	Pad.PaddingBottom = UDim.new(0, 5)
+	Pad.PaddingLeft = UDim.new(0, 0)
+	Pad.PaddingRight = UDim.new(0, 0)
+
+	local List = Util.Instance("UIListLayout", Scroll)
+	List.FillDirection = Enum.FillDirection.Vertical
+	List.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	List.VerticalAlignment = Enum.VerticalAlignment.Top
+	List.Padding = UDim.new(0, 0)
+	List.SortOrder = Enum.SortOrder.LayoutOrder
+
+	Util.LinkDestroyI2C(Scroll, UITextColor.Changed:Connect(function(val)
+		Scroll.ScrollBarImageColor3 = val
+	end))
+	AddToRenderStep(function(t)
+		Scroll.ScrollBarImageColor3 = UITextColor.Value
+	end, Scroll)
+
+	-- 关闭/最小化
+	local MainWindowClosed = false
+	local MainWindowTweening = false
+	local MainWindowPosOpen = nil
+	local MainWindowPosClose = nil
+
+	TopBarClose.Activated:Connect(function()
+		if MainWindowTweening then return end
+		MainWindowTweening = true
+		MainWindowClosed = not MainWindowClosed
+		if MainWindowClosed then
+			MainWindowPosOpen = UIMainWindow.Position
+			TweenService:Create(UIMainWindow, TweenInfo.new(0.5, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {
+				Position = MainWindowPosClose or UDim2.new(0, 100, 0, 100),
+				Size = UDim2.fromOffset(112, 30),
+			}):Play()
+			TweenService:Create(TopBarClose.A, TweenInfo.new(0.5, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {
+				Rotation = 180,
+			}):Play()
+			TweenService:Create(TopBarClose.A.B, TweenInfo.new(0.5, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {
+				Size = UDim2.new(0, 2, 0, 16),
+			}):Play()
+			task.delay(0.6, function()
+				WindowContent.Visible = false
+				MainWindowTweening = false
+			end)
+		else
+			WindowContent.Visible = true
+			MainWindowPosClose = UIMainWindow.Position
+			TweenService:Create(UIMainWindow, TweenInfo.new(0.5, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {
+				Position = MainWindowPosOpen,
+				Size = UDim2.fromOffset(width, height),
+			}):Play()
+			TweenService:Create(TopBarClose.A, TweenInfo.new(0.5, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {
+				Rotation = 0,
+			}):Play()
+			TweenService:Create(TopBarClose.A.B, TweenInfo.new(0.5, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {
+				Size = UDim2.new(0, 2, 0, 0),
+			}):Play()
+			task.delay(0.6, function()
+				MainWindowTweening = false
+			end)
+		end
+		WindowContent.Active = not MainWindowClosed
+		WindowContent.Interactable = not MainWindowClosed
+	end)
+
+	-- 拖动
+	local dragref = nil
+	local offset = Vector2.new(0, 0)
+	TopBarFrame.InputBegan:Connect(function(input)
+		if dragref then return end
+		if input.UserInputState ~= Enum.UserInputState.Begin then return end
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			WindowContent.Interactable = false
+			local screen = Util.GetScreenSize()
+			local ch = (Vector2.new(input.Position.X, input.Position.Y) + SCREENGUI.AbsolutePosition) / screen
+			offset = Util.UDim2ToVector2Scale(UIMainWindow.Position) - ch
+			dragref = input
+		end
+	end)
+	UserInputService.InputChanged:Connect(function(input)
+		if dragref then
+			if input.UserInputType == Enum.UserInputType.MouseMovement or (input.UserInputType == Enum.UserInputType.Touch and dragref == input) then
+				local screen = Util.GetScreenSize()
+				local ch = (Vector2.new(input.Position.X, input.Position.Y) + SCREENGUI.AbsolutePosition) / screen
+				local pos = ch + offset
+				local dowsize = Util.UDim2ToVector2Offset(UIMainWindow.Size)
+				local imjollx = (dowsize.X * 0.5 - 100) / screen.X
+				local imjolly = dowsize.Y * -0.5 / screen.Y
+				local boxy = 31 / screen.Y
+				pos = Vector2.new(
+					math.clamp(pos.X, -imjollx, 1 + imjollx),
+					math.clamp(pos.Y, -imjolly, 1 - imjolly - boxy)
+				)
+				UIMainWindow.Position = Util.Vector2ToUDim2Scale(pos)
+			end
+		end
+	end)
+	UserInputService.InputEnded:Connect(function(input)
+		if dragref and dragref == input then
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+				WindowContent.Interactable = true
+				dragref = nil
+			end
+		end
+	end)
+
+	self.Frame = UIMainWindow
+	self.Content = Scroll
+	self.List = List
+	self.TextColor = UITextColor
+end
+
+function Window:Button(text, callback)
+	local Btn = UI.CreateButton(self.Content, text, 20)
+	Btn.Activated:Connect(function()
+		pcall(callback or function() end)
+	end)
+	return Btn
+end
+
+function Window:Toggle(text, default, callback)
+	return UI.CreateToggle(self.Content, text, default, callback)
+end
+
+function Window:Slider(text, min, max, default, callback)
+	return UI.CreateSlider(self.Content, text, min, max, default, callback)
+end
+
+function Window:Dropdown(text, options, callback)
+	return UI.CreateDropdown(self.Content, text, options, callback)
+end
+
+function Window:Textbox(placeholder, callback)
+	return UI.CreateTextbox(self.Content, placeholder, callback)
+end
+
+function Window:Label(text, size)
+	return UI.CreateLabel(self.Content, text, size)
+end
+
+function Window:Separator()
+	return UI.CreateSeparator(self.Content)
+end
+
+function Window:Notify(text, title)
+	Util.Notify(text, title)
+end
+
+-- ============================================================
+-- 库入口
+-- ============================================================
+local Library = {}
+Library.__index = Library
+
+function Library.new(config)
+	local self = setmetatable({}, Library)
+	local win = setmetatable({}, Window)
+	win:_createUI(config)
+	self.Window = win
+	return win
+end
+
+-- ============================================================
+-- 渲染循环
+-- ============================================================
+RunService:BindToRenderStep("Lengyan_UI_" .. Util.RandomString(), Enum.RenderPriority.Last.Value - 69, function(dt)
+	_totalrendertime += dt
+	UpdateGrads(_totalrendertime)
+	for _, func in _funcrefreshes do
+		local s, e = pcall(func, _totalrendertime, dt)
+		if not s then warn(e) end
+	end
+end)
+
+-- ============================================================
+-- 返回
+-- ============================================================
+return Library
