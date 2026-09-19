@@ -1,7 +1,28 @@
-if _G.LengyanHatLoaded then return end
-_G.LengyanHatLoaded = true
+--[[
+ ...    :::::        ::        ::        ::        ::        ::        
+ ;;     ;;;;;;       ;;;       ;;;       ;;;       ;;;       ;;;       
+[['     [[[[[[[cc,,. [[[[cc,,. [[[[cc,,. [[[[cc,,. [[[[cc,,. [[[[cc,,. 
+$$      $$$$$$"""$$$ $$$"""$$$ $$$"""$$$ $$$"""$$$ $$$"""$$$ $$$"""$$$ 
+88    .d888888   "88o888   "88o888   "88o888   "88o888   "88o888   "88o
+ "YmmMMMM""MMM    YMMMMM    YMMMMM    YMMMMM    YMMMMM    YMMMMM    YMM
+       "DREAMS WILL NEVER COME TRUE UNTIL YOU ACTUALLY MAKE IT."       
 
-local LengyanVersion = "1.0.0"
+       Code:    STEVETHEREALONE
+                BoredGal (mostly patches..)
+       GFX:     STEVETHEREALONE
+                AALib
+                some random generators
+       Music:   Dubmood
+                4mat
+                MASTER BOOT RECORD
+
+Thou shalth not steal. Point at this source if you used a snippet here.
+]]
+
+if _G.UhhhhhhLoaded then return end
+_G.UhhhhhhLoaded = true
+
+local UhhhhhhVersion = "1.0.9 BETA"
 
 local Debris = cloneref(game:GetService("Debris"))
 local CoreGui = cloneref(game:GetService("CoreGui"))
@@ -40,7 +61,7 @@ Util.DeepcopyTable = function(t)
 end
 Util.Notify = function(text)
 	StarterGui:SetCore("SendNotification", {
-		Title = "帽子复活者",
+		Title = "Uhhhhhh",
 		Text = text,
 		Duration = 5
 	})
@@ -56,15 +77,15 @@ local function ismissing(func)
 end
 do
 	local function diefatal(msg)
-		Util.Notify("执行器不受支持。" .. msg)
-		_G.LengyanHatLoaded = nil
+		Util.Notify("Executor not supported. " .. msg)
+		_G.UhhhhhhLoaded = nil
 		error("fatal error cant start")
 	end
 	if ismissing(request) then
-		diefatal("缺少 `request` 或 `http.request` 函数！")
+		diefatal("Missing `request` or `http.request` function!")
 	end
 	if ismissing(getcustomasset) then
-		diefatal("缺少 `getcustomasset` 或 `getsynasset` 函数！")
+		diefatal("Missing `getcustomasset` or `getsynasset` function!")
 	end
 	if ismissing(readfile)
 		or ismissing(writefile)
@@ -73,14 +94,14 @@ do
 		or ismissing(isfolder)
 		or ismissing(makefolder)
 		or ismissing(listfiles) then
-		diefatal("缺少部分文件系统函数！")
+		diefatal("Missing some filesystem functions!")
 	end
 	if ismissing(firetouchinterest) then
-		diefatal("缺少 `firetouchinterest` 函数！")
+		diefatal("Missing `firetouchinterest` function!")
 	end
 	if ismissing(gethiddenproperty) then
 		if ismissing(setscriptable) then
-			diefatal("缺少 `gethiddenproperty` 和 `setscriptable` 函数！")
+			diefatal("Missing `gethiddenproperty` and `setscriptable` function!")
 		elseif ismissing(isscriptable) then
 			gethiddenproperty = function(inst, prop, val)
 				setscriptable(inst, prop, true)
@@ -100,7 +121,7 @@ do
 	end
 	if ismissing(sethiddenproperty) then
 		if ismissing(setscriptable) then
-			diefatal("缺少 `sethiddenproperty` 和 `setscriptable` 函数！")
+			diefatal("Missing `sethiddenproperty` and `setscriptable` function!")
 		elseif ismissing(isscriptable) then
 			sethiddenproperty = function(inst, prop, val)
 				setscriptable(inst, prop, true)
@@ -126,18 +147,18 @@ do
 		end
 	end
 	if not loadstringreturn then
-		diefatal("`loadstring` 创建的函数没有返回值！")
+		diefatal("`loadstring` makes a function that does not return values!")
 	end
 	if not ismissing(isfile) then
-		local s, e = pcall	if(isfile, s Util.RandomString(32))
-	 and e then
+		local s, e = pcall(isfile, Util.RandomString(32))
+		if s and e then
 			isfile = function(path)
 				local s, e = pcall(readfile, path)
 				return not not (s and e)
 			end
 		end
 	else
-		diefatal("这个不应该发生！")
+		diefatal("T-this one shouldn't happen!")
 	end
 end
 
@@ -162,7 +183,7 @@ if not game:IsLoaded() then
 	end, function()
 		notLoaded.Parent = workspace
 	end)
-	notLoaded.Text = "帽子复活者正在等待游戏加载"
+	notLoaded.Text = "Uhhhhhh is waiting for the game to load"
 	game.Loaded:Wait()
 	for i=1, 60 do
 		while task.wait() > 1 / 10 do end
@@ -296,7 +317,7 @@ Util.QueryPlayerSelector = function(query, excludespeaker)
 	return nil
 end
 
-local IsLengyanFullyLoaded = false
+local IsUhhhhhhFullyLoaded = false
 
 local SCREENGUI = Util.Instance("ScreenGui")
 SCREENGUI.IgnoreGuiInset = true
@@ -322,9 +343,9 @@ UIMainFrame.ZIndex = 2147483647
 
 local SaveData = {}
 do
-	pcall(makefolder, "LengyanHat")
-	pcall(writefile, "LengyanHat/.nomedia", "")
-	local SaveDataFilename = "LengyanHat/save.json"
+	pcall(makefolder, "UhhhhhhReanim")
+	pcall(writefile, "UhhhhhhReanim/.nomedia", "")
+	local SaveDataFilename = "UhhhhhhReanim/tree.ehehetilde"
 	local s, data = pcall(readfile, SaveDataFilename)
 	if s and data then
 		s, data = pcall(HttpService.JSONDecode, HttpService, data)
@@ -351,7 +372,7 @@ do
 						odata = data
 					else
 						if not savefailwarn then
-							Util.Notify("无法写入 save.json（存档文件）")
+							Util.Notify("Failed to write tree.ehehetilde (your save file)")
 							savefailwarn = true
 						end
 					end
@@ -359,22 +380,22 @@ do
 				end
 			else
 				if not savefailwarn then
-					Util.Notify("无法写入 save.json（存档文件）")
+					Util.Notify("Failed to write tree.ehehetilde (your save file)")
 					savefailwarn = true
 				end
 			end
 		end
 	end)
-	pcall(makefolder, "LengyanHat/Assets")
-	pcall(makefolder, "LengyanHat/Modules")
-	pcall(makefolder, "LengyanHat/Muzik")
-	pcall(makefolder, "LengyanHat/BuiltinModules")
-	pcall(makefolder, "LengyanHat/Content")
-	pcall(makefolder, "LengyanHat/Content/Anims")
-	pcall(makefolder, "LengyanHat/Content/Sounds")
-	pcall(makefolder, "LengyanHat/Content/Images")
-	pcall(makefolder, "LengyanHat/Content/Models")
-	pcall(makefolder, "LengyanHat/Content/Unknown")
+	pcall(makefolder, "UhhhhhhReanim/Assets")
+	pcall(makefolder, "UhhhhhhReanim/Modules")
+	pcall(makefolder, "UhhhhhhReanim/Muzik")
+	pcall(makefolder, "UhhhhhhReanim/BuiltinModules")
+	pcall(makefolder, "UhhhhhhReanim/Content")
+	pcall(makefolder, "UhhhhhhReanim/Content/Anims")
+	pcall(makefolder, "UhhhhhhReanim/Content/Sounds")
+	pcall(makefolder, "UhhhhhhReanim/Content/Images")
+	pcall(makefolder, "UhhhhhhReanim/Content/Models")
+	pcall(makefolder, "UhhhhhhReanim/Content/Unknown")
 end
 
 do
@@ -412,7 +433,7 @@ do
 	local redownloadeverything = SaveData.CDNVersion ~= CDNVersion
 	local theresassetsmissing = redownloadeverything
 	for _,rfile in AllFileNames do
-		local fil = "LengyanHat/Assets/" .. rfile
+		local fil = "UhhhhhhReanim/Assets/" .. rfile
 		local s, d = pcall(isfile, fil)
 		if not (s and d) then
 			theresassetsmissing = true
@@ -423,7 +444,7 @@ do
 		local skipped = 0
 		local assetsdownload = 0
 		local downloadfile = function(meta)
-			local fil = "LengyanHat/Assets/" .. meta.name
+			local fil = "UhhhhhhReanim/Assets/" .. meta.name
 			if not redownloadeverything then
 				local s, d = pcall(isfile, fil)
 				if s and d then
@@ -447,7 +468,7 @@ do
 		Downloading.TextColor3 = Color3.new(1, 1, 1)
 		Downloading.TextSize = 20
 		Downloading.Font = Enum.Font.Code
-		Downloading.Text = "正在获取资源元数据..."
+		Downloading.Text = "Fetching Assets metadata..."
 		Util.ForceTextSize(Downloading)
 		TweenService:Create(Downloading, TweenInfo.new(0.5), {
 			Size = UDim2.new(1, 0, 0, 32)
@@ -465,18 +486,18 @@ do
 					task.spawn(downloadfile, file)
 				end
 				repeat
-					Downloading.Text = `正在下载资源 {downloaded}/{assetsdownload}...（{skipped} 个跳过）`
+					Downloading.Text = `Downloading assets {downloaded}/{assetsdownload}... ({skipped} skipped)`
 					Downloading.BackgroundColor3 = Color3.new(0, 0, 0)
 					task.wait()
 				until downloaded == assetsdownload
-				Downloading.Text = "下载完成！ \\(^o^)/"
+				Downloading.Text = "Download complete! \\(^o^)/"
 				Downloading.BackgroundColor3 = Color3.new(0, 1, 0)
 				theresassetsmissing = false
 			end
 		end
 		SaveData.CDNVersion = CDNVersion
 		if theresassetsmissing then
-			Downloading.Text = "资源下载失败。 3:"
+			Downloading.Text = "Asset downloading failed. 3:"
 			Downloading.BackgroundColor3 = Color3.new(1, 0, 0)
 		end
 		TweenService:Create(Downloading, TweenInfo.new(0.5), {
@@ -489,7 +510,7 @@ do
 end
 
 Util.GetCDNAsset = function(filename)
-	local path = "LengyanHat/Assets/" .. filename
+	local path = "UhhhhhhReanim/Assets/" .. filename
 	local s, id = pcall(isfile, path)
 	if s and id then
 		s, id = pcall(getcustomasset, path)
@@ -498,7 +519,7 @@ Util.GetCDNAsset = function(filename)
 	return ""
 end
 
--- 圆形里一顶礼帽
+-- 圆形里一顶礼帽（替代原三角形）
 Util.MakeHat = function(color, dur)
 	dur = dur or 8
 	local pivot = Util.Instance("Frame")
@@ -547,18 +568,10 @@ Util.MakeHat = function(color, dur)
 	brim.BorderSizePixel = 0
 	Util.Instance("UICorner", brim).CornerRadius = UDim.new(1, 0)
 
-	TweenService:Create(ringStroke, TweenInfo.new(dur, Enum.EasingStyle.Linear), {
-		Color = color
-	}):Play()
-	TweenService:Create(crown, TweenInfo.new(dur, Enum.EasingStyle.Linear), {
-		BackgroundColor3 = color
-	}):Play()
-	TweenService:Create(brim, TweenInfo.new(dur, Enum.EasingStyle.Linear), {
-		BackgroundColor3 = color
-	}):Play()
-	TweenService:Create(band, TweenInfo.new(dur, Enum.EasingStyle.Linear), {
-		BackgroundColor3 = color
-	}):Play()
+	TweenService:Create(ringStroke, TweenInfo.new(dur, Enum.EasingStyle.Linear), { Color = color }):Play()
+	TweenService:Create(crown, TweenInfo.new(dur, Enum.EasingStyle.Linear), { BackgroundColor3 = color }):Play()
+	TweenService:Create(brim, TweenInfo.new(dur, Enum.EasingStyle.Linear), { BackgroundColor3 = color }):Play()
+	TweenService:Create(band, TweenInfo.new(dur, Enum.EasingStyle.Linear), { BackgroundColor3 = color }):Play()
 
 	return pivot
 end
@@ -648,38 +661,38 @@ UISound.Music.PlaybackSpeed = 1
 
 local MusicPlayer = {}
 MusicPlayer.Database = {
-	{"LengyanHat/Assets/dm_afterburner.ft2.mp3", "Dubmood - Afterburner"},
-	{"LengyanHat/Assets/dm_robotadventure.ft2.mp3", "Dubmood & Zabutom - Robot Adventure Remix"},
-	{"LengyanHat/Assets/4m_brokenheart.ft2.mp3", "4-Mat - <3 Broken Heart <3"},
-	{"LengyanHat/Assets/fr_brokenheart.ft2.mp3", "Hoster's FR - Alternate Broken Heart"},
-	{"LengyanHat/Assets/dm_change.ft2.mp3", "Dubmood - Change (Radio Edit)"},
-	{math.random() < 0.5 and "LengyanHat/Assets/dm_deadscene2024.ft2.mp3" or "LengyanHat/Assets/dm_deadscene2024alt.ft2.mp3", "Dubmood - The Scene is Dead 2024"},
-	{"LengyanHat/Assets/dm_e1m777.ft2.mp3", "Dubmood & MBR - E1M777"},
-	{"LengyanHat/Assets/dm_haze.ft2.mp3", "Dubmood - Haze (Keygen 13 Edit)"},
-	{"LengyanHat/Assets/dm_haze2.ft2.mp3", "Dubmood - Haze Keygen 2"},
-	{"LengyanHat/Assets/dm_iostesso.ft2.mp3", "Dubmood - Io Stesso"},
-	{"LengyanHat/Assets/dm_keygen3.ft2.mp3", "Dubmood - Keygen 3"},
-	{"LengyanHat/Assets/dm_keygen8.ft2.mp3", "Dubmood - Keygen 8"},
-	{"LengyanHat/Assets/dm_keygen18.ft2.mp3", "Dubmood - Keygen 18"},
-	{"LengyanHat/Assets/dm_keygen19.ft2.mp3", "Dubmood - Keygen 19"},
-	{"LengyanHat/Assets/dm_keygen20.ft2.mp3", "Dubmood - Keygen 20"},
-	{"LengyanHat/Assets/dm_keygen21alt.ft2.mp3", "Dubmood - Keygen 21"},
-	{"LengyanHat/Assets/dm_keygen21.ft2.mp3", "Dubmood - Keygen 21 (Installer Edit)"},
-	{"LengyanHat/Assets/dm_keygen22.ft2.mp3", "Dubmood - Keygen 22"},
-	{"LengyanHat/Assets/dm_keygen23.ft2.mp3", "Dubmood - Keygen 23"},
-	{"LengyanHat/Assets/dm_keygen30.ft2.mp3", "Dubmood - Keygen 30"},
-	{"LengyanHat/Assets/dm_keygen31.ft2.mp3", "Dubmood - Keygen 31"},
-	{"LengyanHat/Assets/fr_keygen31.ft2.mp3", "Hoster's FR - Alternate Keygen 31"},
-	{"LengyanHat/Assets/dm_laparade.ft2.mp3", "Dubmood & MBR - La Parade"},
-	{"LengyanHat/Assets/dm_reztro4.ft2.mp3", "Dubmood - Rez Cracktro #4"},
-	{"LengyanHat/Assets/dm_unaseraariccione.ft2.mp3", "Dubmood - Una Sera A Riccione"},
+	{"UhhhhhhReanim/Assets/dm_afterburner.ft2.mp3", "Dubmood - Afterburner"},
+	{"UhhhhhhReanim/Assets/dm_robotadventure.ft2.mp3", "Dubmood & Zabutom - Robot Adventure Remix"},
+	{"UhhhhhhReanim/Assets/4m_brokenheart.ft2.mp3", "4-Mat - <3 Broken Heart <3"},
+	{"UhhhhhhReanim/Assets/fr_brokenheart.ft2.mp3", "Hoster's FR - Alternate Broken Heart"},
+	{"UhhhhhhReanim/Assets/dm_change.ft2.mp3", "Dubmood - Change (Radio Edit)"},
+	{math.random() < 0.5 and "UhhhhhhReanim/Assets/dm_deadscene2024.ft2.mp3" or "UhhhhhhReanim/Assets/dm_deadscene2024alt.ft2.mp3", "Dubmood - The Scene is Dead 2024"},
+	{"UhhhhhhReanim/Assets/dm_e1m777.ft2.mp3", "Dubmood & MBR - E1M777"},
+	{"UhhhhhhReanim/Assets/dm_haze.ft2.mp3", "Dubmood - Haze (Keygen 13 Edit)"},
+	{"UhhhhhhReanim/Assets/dm_haze2.ft2.mp3", "Dubmood - Haze Keygen 2"},
+	{"UhhhhhhReanim/Assets/dm_iostesso.ft2.mp3", "Dubmood - Io Stesso"},
+	{"UhhhhhhReanim/Assets/dm_keygen3.ft2.mp3", "Dubmood - Keygen 3"},
+	{"UhhhhhhReanim/Assets/dm_keygen8.ft2.mp3", "Dubmood - Keygen 8"},
+	{"UhhhhhhReanim/Assets/dm_keygen18.ft2.mp3", "Dubmood - Keygen 18"},
+	{"UhhhhhhReanim/Assets/dm_keygen19.ft2.mp3", "Dubmood - Keygen 19"},
+	{"UhhhhhhReanim/Assets/dm_keygen20.ft2.mp3", "Dubmood - Keygen 20"},
+	{"UhhhhhhReanim/Assets/dm_keygen21alt.ft2.mp3", "Dubmood - Keygen 21"},
+	{"UhhhhhhReanim/Assets/dm_keygen21.ft2.mp3", "Dubmood - Keygen 21 (Installer Edit)"},
+	{"UhhhhhhReanim/Assets/dm_keygen22.ft2.mp3", "Dubmood - Keygen 22"},
+	{"UhhhhhhReanim/Assets/dm_keygen23.ft2.mp3", "Dubmood - Keygen 23"},
+	{"UhhhhhhReanim/Assets/dm_keygen30.ft2.mp3", "Dubmood - Keygen 30"},
+	{"UhhhhhhReanim/Assets/dm_keygen31.ft2.mp3", "Dubmood - Keygen 31"},
+	{"UhhhhhhReanim/Assets/fr_keygen31.ft2.mp3", "Hoster's FR - Alternate Keygen 31"},
+	{"UhhhhhhReanim/Assets/dm_laparade.ft2.mp3", "Dubmood & MBR - La Parade"},
+	{"UhhhhhhReanim/Assets/dm_reztro4.ft2.mp3", "Dubmood - Rez Cracktro #4"},
+	{"UhhhhhhReanim/Assets/dm_unaseraariccione.ft2.mp3", "Dubmood - Una Sera A Riccione"},
 }
 pcall(function()
 	local future = table.clone(MusicPlayer.Database)
-	if isfile("LengyanHat/Muzik/nobuiltin") then
+	if isfile("UhhhhhhReanim/Muzik/nobuiltin") then
 		table.clear(future)
 	end
-	for _,file in listfiles("LengyanHat/Muzik") do
+	for _,file in listfiles("UhhhhhhReanim/Muzik") do
 		if isfile(file) and file:sub(-4, -1) == ".mp3" then
 			table.insert(future, {file, file:sub(21, -5)})
 		end
@@ -746,24 +759,34 @@ else
 	UISound.Music.Volume = 1
 	UISound.Music.TimePosition = 0
 	local scrolltexts = {
-		"帽子复活者 出品                                    ",
-		"大家好，欢迎来到我的游戏                          ",
-		"我们的帽子去哪了？                *被语音警告*    ",
-		"向所有帮忙做帽子的朋友致敬                        ",
-		":3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 >:3 :3",
-		"快速开场            快速滚动字幕          你会错过笑点",
-		"喵喵喵喵喵喵喵喵 >:3                              ",
-		"wwwwwwwwwwwwwwwwwww                         草   ",
-		"我要泄露你所有脚本 我要泄露你所有脚本 我要泄露你所有",
-		"fflags 都死啦 哈哈                                ",
-		"想象一下被叫做笨蛋                                ",
-		"即使我闷闷不乐，也不会有什么好事发生！今天努力了，今天就是完美的！",
-		"谁他妈会看这个？？                    大家好      ",
-		"          相信我，界面很好看            它来了    ",
-		"但我克制住思绪，像只没头苍蝇一样一直跑            ",
-		"这就是个开场动画啦                                ",
-		"嘿 冷，为什么这个比 genesis fe 还好？             ",
-		"RCDless 是 Roblox 漏洞利用的未来                  ",
+		"stevetherealone presents a script                                 ",
+		"hi guys welcome to my game                                        ",
+		"holy shit where did our friends go?               *gets vc warned*",
+		"greetings to qpmbsjbvt for getting me into reanimation            ",
+		"those who know the place called ajman, dubai, uae                 ",
+		":3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 :3 >:3 :3 :3 :3 :3 :3 :3",
+		"quick intro        with quick scrolltext         and you will miss",
+		"meeeooowwwwwwwwww >:3                                          maw",
+		"wwwwwwwwwwwwwwwwwww                         grass                 ",
+		"i will leak all ur script i will leak all ur script i will leak al",
+		"fflags are dead lol                                               ",
+		"imagine being called a dummy                                      ",
+		"hi                          ...                oxide more like sui",
+		"even if I mope, nothing good will happen! if i worked hard today, today will be perfecto!",
+		"who the fuck even reads this??                     hi guys        ",
+		"          trust me the ui looks good             here it comes    ",
+		"dying is scary, but living is difficult                               dying: gifted scary; living: pure difficult",
+		"but i halter my forethought, i keep on running like a chicken     ",
+		"kaiya sounds like a perfect name for a genshin impact character   ",
+		"this is an intro lol                        ",
+		"greetings to myworld for helping with -net less                   ",
+		"all UI music credits to dubmood, zabutom, ogge, 4mat and hoster   ",
+		"heres the triforce                and heres my name                              ",
+		"skids are now taking credit of this entire script, meaning its so good           ",
+		"skids, be alert, go to weao.xyz for your roblox hacks!            ",
+		"                                             ok.                         ",
+		"hey steve why is this better than genesis fe?                     ",
+		"RCDless is the future of roblox exploiting                        ",
 	}
 	scrolltexts = scrolltexts[math.random(1, #scrolltexts)]
 	local fade = TweenService:Create(UIMainFrame, TweenInfo.new(5), {BackgroundTransparency = 0.5})
@@ -852,7 +875,7 @@ else
 			authorlabel.Visible = true
 			authorlabel.Size = UDim2.fromOffset(z, z)
 		elseif t < 4.756 then
-			authorlabel.Text = "冷"
+			authorlabel.Text = "STEVE\nTHERE\nALONE"
 			authorlabel.Visible = true
 			authorlabel.Size = UDim2.fromOffset(100, 100)
 		else
@@ -1071,13 +1094,16 @@ local function SetUITheme(index)
 		if typeof(t.Text) == "string" then
 			theme[3] = Color3.fromHex(t.Text)
 		end
+		if typeof(t.Text) == "string" then
+			theme[3] = Color3.fromHex(t.Text)
+		end
 		if typeof(t.SndClick) == "string" then
 			theme[4] = t.SndClick
 		end
 	end
 	if index == #UIThemes + 1 then
-		if type(_G.LengyanTheme) == "table" and getmetatable(_G.LengyanTheme) == nil then
-			processtable(_G.LengyanTheme)
+		if type(_G.UhhhhhhTheme) == "table" and getmetatable(_G.UhhhhhhTheme) == nil then
+			processtable(_G.UhhhhhhTheme)
 			SaveData.UIThemeUserDefined = {
 				Fore = theme[1] and theme[1]:ToHex(),
 				Back = theme[2] and theme[2]:ToHex(),
@@ -1100,7 +1126,7 @@ end
 SaveData.UITheme = SaveData.UITheme or 1
 SetUITheme(SaveData.UITheme)
 
-local CracktroFrameText = "帽子复活者 V" .. LengyanVersion
+local CracktroFrameText = "Uhhhhhh Reanimate V" .. UhhhhhhVersion
 local UIMainWindow, WindowContent do
 	UIMainWindow = Util.Instance("Frame", UIMainFrame)
 	UIMainWindow.Active = true
@@ -1137,7 +1163,7 @@ local UIMainWindow, WindowContent do
 			_registerclicksnd(v)
 		end
 	end)
-
+	
 	local TopBarFrame = Util.Instance("Frame", UIMainWindow)
 	TopBarFrame.Position = UDim2.new(0, 0, 0, 0)
 	TopBarFrame.Size = UDim2.new(1, 0, 0, 30)
@@ -1147,7 +1173,7 @@ local UIMainWindow, WindowContent do
 	TopBarFrame.ClipsDescendants = true
 	TopBarFrame.ZIndex = 1
 	Stylize(TopBarFrame)
-
+	
 	local TopBarText = Util.Instance("TextLabel", TopBarFrame)
 	TopBarText.AnchorPoint = Vector2.new(0, 0.5)
 	TopBarText.Position = UDim2.new(0, 8, 0.5, 0)
@@ -1158,70 +1184,89 @@ local UIMainWindow, WindowContent do
 	TopBarText.TextColor3 = Color3.new(1, 1, 1)
 	TopBarText.TextSize = 20
 	TopBarText.TextXAlignment = Enum.TextXAlignment.Left
-	TopBarText.Text = "帽子复活者 | v" .. LengyanVersion
+	TopBarText.Text = "Uhhhhhh Reanimate | v" .. UhhhhhhVersion
 	TopBarText.RichText = true
 	RegisterTextLabel(TopBarText)
 	Util.ForceTextSize(TopBarText)
 	if (SaveData.SkipIntro and math.random(2) == 1) or os.date("%m %d") ~= "04 01" then
 		local quotes = {
-			"帽子复活者 | v" .. LengyanVersion,
-			"惊喜吧",
-			"你永远猜不到",
-			Player.Name .. " 的帽子复活会话",
-			"帽子都回来啦",
+			"Ohhhhhh Re-create | v" .. UhhhhhhVersion,
+			"jumpscare",
+			"you'll never see it coming",
+			Player.Name .. "'s Uhhhhhh Session",
+			"genesis hat collide releaser admin gui",
+			"Delta Executor",
+			"optimise the optimised",
 			":troll:",
-			"等一下，有点不对劲",
-			"你好",
-			"HHHHH",
-			"咕咕嘎嘎",
-			"帽子复活器",
-			"冷 出品",
+			"solara executor",
+			"wait a minute smth aint right",
+			"gta6 releaser",
+			"HD Admin",
+			"The Return Of STEVE's Roserika",
+			"HI",
+			"<font color=\"#00DDFF\">Oxide</font> Version 67",
+			"currentangle v5",
+			"patchma hub by <font color=\"#0000FF\">MyWorld</font>",
+			"Genesis FE with extra steps",
+			"Gugu Gaga",
+			"Half Life 3 Releaser",
+			"hatdrop hub",
+			"uhhhh hub",
+			"Emperyan Reanimate",
+			"<font color=\"#0000FF\">IM BLUE BADA DEE BADA DIE</font>",
+			"Delta Reanimate | v" .. UhhhhhhVersion,
 		}
 		if os.date("%m") == "12" and math.random(4) == 1 then
 			quotes = {
-				"呵呵呵",
-				"圣诞快乐",
-				"圣诞快乐，" .. Player.Name,
-				"啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊",
-				"外面好冷，快进来",
+				"ho ho ho",
+				"dess from deltarune",
+				"jesus christmas",
+				"Happy Xmas, " .. Player.Name,
+				"Razor1911 says... SOCIALIZE!",
+				"UHHHHHHHHHHHHHHHHHHHHHHHHHHHH",
+				"its cold outside get in here",
+				"christmas tree builder",
+				"UHHHH]",
 			}
 		end
 		if os.date("%m") == "01" and math.random(4) == 1 then
 			quotes = {
-				"新年新我",
-				"新年快乐",
-				"新年，" .. Player.Name,
-				"让孩子们远离烟花",
-				"砰？是的里科，砰。",
+				"new year new me",
+				"HAVE A HAPPY NEW YEAR",
+				"A NEW YEAR??",
+				"New Years, " .. Player.Name,
+				"did u explode yet?",
+				"KEEP YER KIDS SAFE FROM FIREWORK",
+				"kaboom? yes rico, kaboom.",
 			}
 		end
 		local aprilfools = os.date("%m") == "04 01"
 		if aprilfools then
 			local troll = math.random(3)
 			if troll == 1 then
-				CracktroFrameText = "帽子复活者 V67"
-				quotes = {"帽子复活者"}
+				CracktroFrameText = "Oxide Reanimation V67"
+				quotes = {"<font color=\"#00DDFF\">Oxide</font>   Reanimation"}
 				SetUITheme(3)
 			end
 			if troll == 2 then
-				CracktroFrameText = "帽子复活者 V67"
-				quotes = {"帽子复活者"}
+				CracktroFrameText = "patchma hub V67"
+				quotes = {"<font color=\"#0000FF\">patchma hub</font> by MyWorld"}
 				SetUITheme(4)
 			end
 			if troll == 3 then
-				CracktroFrameText = "帽子复活者 V4"
-				quotes = {"帽子复活者"}
+				CracktroFrameText = "Genesis V4 but better"
+				quotes = {"<font color=\"#CC11FF\">Genesis V4 - Neptunian V</font>"}
 				SetUITheme(5)
 			end
 		end
 		TopBarText.Text = quotes[math.random(1, #quotes)]
 		if not aprilfools then
 			task.delay(2, function()
-				TopBarText.Text = "帽子复活者 | v" .. LengyanVersion
+				TopBarText.Text = "Uhhhhhh Reanimate | v" .. UhhhhhhVersion
 			end)
 		end
 	end
-
+	
 	local TopBarClose = Util.Instance("TextButton", TopBarFrame)
 	TopBarClose.AnchorPoint = Vector2.new(1, 0)
 	TopBarClose.Position = UDim2.new(1, 0, 0, 0)
@@ -1252,14 +1297,14 @@ local UIMainWindow, WindowContent do
 			TopBarClose.A.B.BackgroundColor3 = val
 		end)
 	end
-
+	
 	WindowContent = Util.Instance("Frame", UIMainWindow)
 	WindowContent.Position = UDim2.new(0, 0, 0, 30)
 	WindowContent.Size = UDim2.new(1, 0, 1, -35)
 	WindowContent.BackgroundTransparency = 1
 	WindowContent.ClipsDescendants = true
 	WindowContent.ZIndex = 0
-
+	
 	local MainWindowClosed = false
 	local MainWindowTweening = false
 	local MainWindowPosOpen = nil
@@ -1314,7 +1359,7 @@ local UIMainWindow, WindowContent do
 		WindowContent.Active = not MainWindowClosed
 		WindowContent.Interactable = not MainWindowClosed
 	end)
-
+	
 	local dragref = nil
 	local offset = Vector2.new(0, 0)
 	TopBarFrame.InputBegan:Connect(function(input)
@@ -1370,7 +1415,7 @@ local function AddToRenderStep(func, linkto)
 	return func
 end
 local _totalrendertime = 0
-RunService:BindToRenderStep("Lengyan_Render" .. Util.RandomString(), Enum.RenderPriority.Last.Value - 69, function(dt)
+RunService:BindToRenderStep("Uhhhhhh_Render" .. Util.RandomString(), Enum.RenderPriority.Last.Value - 69, function(dt)
 	_totalrendertime += dt
 	UpdateGrads(_totalrendertime)
 	WindowContent.Visible = UIMainWindow.Size.Y.Offset > 35
@@ -1491,7 +1536,7 @@ AddToRenderStep(function(t)
 	CracktroFrame.BackgroundColor3 = GetUIBGColor(t)
 end, CracktroFrame)
 
-do -- 主页
+do -- homepage
 	local HatClip = Util.Instance("CanvasGroup", CracktroFrame)
 	HatClip.Position = UDim2.new(0, 0, 0, 0)
 	HatClip.Size = UDim2.new(1, 0, 1, 0)
@@ -1542,17 +1587,17 @@ do -- 主页
 	text.Position = UDim2.new(0.5, 0, 1, -25)
 	text.ZIndex = 3
 	text.Parent = CracktroFrame
-	local text0 = Util.MakeText("HHHHH")
+	local text0 = Util.MakeText("Discord: discord.gg/NASNUKRBVM")
 	text0.AnchorPoint = Vector2.new(0.5, 1)
 	text0.Position = UDim2.new(0.5, 0, 1, -17)
 	text0.ZIndex = 3
 	text0.Parent = CracktroFrame
-	local text1 = Util.MakeText("作者：冷 :" .. (math.random() < 0.333 and "3" or (math.random() < 0.5 and "D" or "P")))
+	local text1 = Util.MakeText("Made by STEVETHEREALONE :" .. (math.random() < 0.333 and "3" or (math.random() < 0.5 and "D" or "P")))
 	text1.AnchorPoint = Vector2.new(0.5, 1)
 	text1.Position = UDim2.new(0.5, 0, 1, -17)
 	text1.ZIndex = 3
 	text1.Parent = CracktroFrame
-	local text2 = Util.MakeText("点击开始！")
+	local text2 = Util.MakeText("Click me to start!")
 	text2.AnchorPoint = Vector2.new(0.5, 1)
 	text2.Position = UDim2.new(0.5, 0, 1, -17)
 	text2.ZIndex = 3
@@ -1562,21 +1607,23 @@ do -- 主页
 	Util.SetTextColor(text1, UITextColor.Value, 0)
 	Util.SetTextColor(text2, UITextColor.Value, 0)
 	local quotes = {
-		"\"每个客户端都绕着服务器转...\"",
-		Player.Name .. "，你这个" .. os.date("%A") .. "过得怎么样？",
-		"今天 .. 真是个好" .. os.date("%A") .. "，对吧？",
-		"你好，" .. Player.Name .. "。",
-		"你为什么要在这个" .. os.date("%I %p") .. "玩？",
-		"你会喜欢帽子复活者的，我就是知道。",
-		"这个脚本非常\"啰嗦\"。",
-		"我在这圈子里还算个新人！:D",
-		"\"梦想会成真！\"",
-		"灵感来自一个梦。",
-		"如果你喜欢这个程序，加入我的 Discord！",
-		"boredgal 来过..",
-		"咕咕嘎嘎终极版",
-		"海绵宝宝",
-		"顺便说一句，我是 Razor 1911 的'粉丝'！",
+		"\"EVERY CLIENT ORBITS A SERVER...\"",
+		Player.Name .. ", how is your " .. os.date("%A") .. "?",
+		"A great " .. os.date("%A") .. " today, eh?",
+		"Hello, " .. Player.Name .. ".",
+		"What makes you play at " .. os.date("%I %p") .. "?",
+		"You are going to love Uhhhhhh, I just know it.",
+		"This script is very \"verbose\".",
+		"Written mostly on a mobile phone.",
+		"I am pretty new in this community! :D",
+		"\"Dreams come true!\"",
+		"Idea originated from a dream.",
+		"If you love this program, join my Discord!",
+		"boredgal was here..",
+		"gugu gaga ultimate",
+		"Kleiner me to start!",
+		"Spongebob squarepants",
+		"I'm a Razor 1911 'fan' btw!",
 	}
 	local text3 = nil
 	local text3mustchange = false
@@ -1713,7 +1760,7 @@ do -- 主页
 				end
 			end
 			local textsel = t % 9
-			if IsLengyanFullyLoaded then
+			if IsUhhhhhhFullyLoaded then
 				textsel = t % 12
 			end
 			textsel //= 3
@@ -2111,6 +2158,11 @@ function UI.CreateSlider(parent, text, value, min, max, step)
 		end
 		BoxText.Text = str
 		SliderB.Position = UDim2.new(math.clamp((Select.Value - min) / (max - min), 0, 1), 0, 0.5, 0)
+		if math.random(4) == 1 then
+			if str:find("67") or str:find("6.7") then
+				Util.UINotify("SIX SEVENNNN 67 67 67 67 OMG")
+			end
+		end
 	end
 	Select.Value = value
 	Select.Changed:Connect(update)
@@ -2302,6 +2354,12 @@ function UI.CreateDropdown(parent, text, array, value)
 		end
 	end)
 	Util.LinkDestroyI2C(Dropdown, conn)
+	local scrollframe = Container:FindFirstAncestorWhichIsA("ScrollingFrame")
+	if scrollframe then
+		local conn = scrollframe:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
+			opened = false
+		end)
+	end
 	local opentween = 0
 	AddToRenderStep(function(t, dt)
 		if opened then
@@ -2377,7 +2435,7 @@ local MainPage = UI.CreatePage()
 MainPage.Interactable = false
 CracktroFrame.InputEnded:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-		if _totalrendertime < 1 or not IsLengyanFullyLoaded then return end
+		if _totalrendertime < 1 or not IsUhhhhhhFullyLoaded then return end
 		CracktroFrame.Interactable = false
 		CracktroFrame.Visible = true
 		MainPage.Interactable = false
@@ -2440,13 +2498,13 @@ task.spawn(function()
 			"ationan'   .JTTVV|;;;;;;;;;;;;;|VVVVm>   'nimatio",
 			"nanima'   _mQc;~~|.............|~~+jQmc   'ionani",
 			"matio'   _QQQQg, |             |  jQQQQc.  'imati",
-			"onan'   <QQQQQQm;|   帽子复活者  |.wQQQQWQa,  'onan",
+			"onan'   <QQQQQQm;|   Uhhhhhh   |.wQQQQWQa,  'onan",
 			"ima'   jWQQQQQQQQ|             |mQQQQQQQQg,  'mat",
 		},
 		{
 			"fore! It is really great! Good product! Feel alive, NO",
 			"st part^ '' '  \"\"*E! (excluding taxes and the bills) N",
-			"r seu- . 帽子复活者 .-|u ihis! It has become something ne",
+			"r seu- . Uhhhhhh .-|u ihis! It has become something ne",
 			"rse! We ,... . ,.-rs of yellow-orange shiny triangles.",
 			"ns at a really stable framerate, so optimised it handl",
 			"ow, BUY OUR PRODUCT FOR FREE! We know you like it! We ",
@@ -2454,29 +2512,29 @@ task.spawn(function()
 		{
 			"....... gmWWWQQQQQQPg ..............................",
 			":;:;:; qm#WWNWQQWQWWmp ;:;:;:.                  .;:;",
-			"!!?!!?.WX##: W#W :###W.?!!?:.  大家好，我是冷！   .:!",
-			"lilili:ZSXS: XSX :X##Z:ilil!. 欢迎来到帽子复活者 .!i",
+			"!!?!!?.WX##: W#W :###W.?!!?:.  hi im steve!      .:!",
+			"lilili:ZSXS: XSX :X##Z:ilil!. welcome to Uhhhhhh .!i",
 			"EEEEEE:YLkk2S2SXSXSXZP:EEEEEi:                  :iEE",
 			"%%%%%%%;vnvkkkk2S2vnv;%%%%%%%%%oooooooooooooooo%%%%%",
 		},
 		{
-			"  获取帽子复活者！感受不同！              ",
-			"           (-_-)         史诗！   (^~^)   .vv=E ",
+			"  Get Uhhhhhh today! Feel the difference!       ",
+			"           (-_-)         EPIC!    (^~^)   .vv=E ",
 			"       ()-(:::::)-()         .()-(:::::)-()'    ",
-			"菜！   || |.....| ||      3=^^'  /...../        ",
-			"       YP |     | YP            (     )   酷！  ",
-			"      没有帽子复活者   对比   有帽子复活者      ",
+			"LAME!  || |.....| ||      3=^^'  /...../        ",
+			"       YP |     | YP            (     )   COOL! ",
+			"      Without Uhhhhhh   vs.   With Uhhhhhh      ",
 		},
 		{
 			"55 68 68 68 68 68 68 55 68 68 68 68 68 68",
 			"68 68 68 68 68 68 55 68 68 68 68 68 68 55",
 			"68 68 68 68 68 55 68 68 68 68 68 68 55 68",
-			"68 68 68 68 帽子复活者  68 68 68 68 55 68 68",
+			"68 68 68 68 Uhhhhhh  68 68 68 68 55 68 68",
 			"68 68 68 55 68 68 68 68 68 68 55 68 68 68",
 			"68 68 55 68 68 68 68 68 68 55 68 68 68 68",
 		},
 		{
-			"  帽子复活者        ",
+			"  Uhhhhhh          ",
 			"  01010101         ",
 			"   01101000        ",
 			"    01101000       ",
@@ -2484,20 +2542,20 @@ task.spawn(function()
 			"      01101000     ",
 			"       01101000    ",
 			"        01101000   ",
-			"         帽子复活者",
+			"         Uhhhhhh   ",
 		},
 		{
-			"+-[ 帽子复活者 ]-----------------[#]-+",
+			"+-[ Uhhhhhh Reanimate ]-----------------[#]-+",
 			"|    ___                                    |",
-			"|   / o \\   你好，世界！被编程为             |",
-			"|   \\ l /   工作而不去感受。                 |",
+			"|   / o \\   Hello, world! Programmed to     |",
+			"|   \\ l /   work and not to feel.           |",
 			"|    \"\"\"                                    |",
 			"+-------------------------------------------+",
 		},
 		{
 			"       cIyyyyyyF0\\ `TFyyyyyyq8_                 ",
 			"           i+`}0v       V!'xD~                  ",
-			"           &x~[.        W|11   --帽子复活者--   ",
+			"           &x~[.        W|11   --Uhhhhhh--      ",
 			"          ~W,          }D                       ",
 			"        <d$-         tg3`                       ",
 			"   \".''   ......             '.      \"`   ;     ",
@@ -2506,7 +2564,7 @@ task.spawn(function()
 			"    ~1}`  `}\\    ;*111*; ^[; .^    +\\    `x     ",
 		},
 		{
-			"  local oldsec = 0          .-+=* 帽子复活者 *=+-. ",
+			"  local oldsec = 0          .-+=* Uhhhhhh *=+-. ",
 			"  while i < #keyframes do     (code-ception!)   ",
 			"      local k = keyframes[i]                    ",
 			"      local sec = k.Time // self._optimiser     ",
@@ -2517,7 +2575,7 @@ task.spawn(function()
 			"er failed to process http://assetgame.roblox.com/as",
 			"er failed to process http://assetgame.roblox.com/as",
 			"--------------------------------------------       ",
-			"so, 帽子复活者...                                  ",
+			"so, Uhhhhhh...                                     ",
 			"--------------------------------------------       ",
 			"er failed to process http://assetgame.roblox.com/as",
 			"er failed to process http://assetgame.roblox.com/as",
@@ -2526,24 +2584,24 @@ task.spawn(function()
 		{
 			"usage: clone this repo and change the token and the",
 			"(unless you like chaos) also make sure you have all",
-			"the dev portal cuz 帽子复活者.                     ",
+			"the dev portal cuz Uhhhhhh.                        ",
 			"                                                   ",
 			"\"it's not fast it's shit\"                          ",
 			"Believe me friend, its fuckingly fast, you don't ev",
 		},
 		{
-			"帽子复活者  HHHHH  帽子复活者",
-			"帽子复活者 帽子复活者 帽子复活者 帽子复活者 冷",
-			"帽子复活者 帽子复活者 帽子复活者 冷 帽子复活者",
-			"帽子复活者 帽子复活者 冷 帽子复活者 帽子复活者",
-			"帽子复活者 冷 帽子复活者 帽子复活者 帽子复活者",
-			"冷 帽子复活者 帽子复活者 帽子复活者 帽子复活者",
+			"Uhhhhhh  https://discord.gg/NASNUKRBVM  Uhhhhhh",
+			"Uhhhhhh Uhhhhhh Uhhhhhh Uhhhhhh STEVETHEREALONE",
+			"Uhhhhhh Uhhhhhh Uhhhhhh STEVETHEREALONE Uhhhhhh",
+			"Uhhhhhh Uhhhhhh STEVETHEREALONE Uhhhhhh Uhhhhhh",
+			"Uhhhhhh STEVETHEREALONE Uhhhhhh Uhhhhhh Uhhhhhh",
+			"STEVETHEREALONE Uhhhhhh Uhhhhhh Uhhhhhh Uhhhhhh",
 		},
 	}
 	AsciiText.Text = table.concat(AsciiTextarts[math.random(1, #AsciiTextarts)], "\n")
 	local AsciiTextartsw = false
 	local AsciiTextarttr = {}
-	do -- 生成过渡
+	do -- generate transitions
 		local a = {}
 		for i=0, 59 do
 			local t = i / 60
@@ -2703,9 +2761,9 @@ task.spawn(function()
 	end)
 	switchart()
 end)
-UI.CreateText(MainPage, `帽子复活者 V{LengyanVersion}，作者：冷`, 15, Enum.TextXAlignment.Right)
+UI.CreateText(MainPage, `Reanimate V{UhhhhhhVersion}, By STEVE :D`, 15, Enum.TextXAlignment.Right)
 UI.CreateSeparator(MainPage)
-UI.CreateButton(MainPage, " &lt; 返回开场画面", 20).Activated:Connect(function()
+UI.CreateButton(MainPage, " &lt; Back to cool scene", 20).Activated:Connect(function()
 	CracktroFrame.Interactable = false
 	CracktroFrame.Visible = true
 	MainPage.Interactable = false
@@ -2717,27 +2775,27 @@ UI.CreateButton(MainPage, " &lt; 返回开场画面", 20).Activated:Connect(func
 		CracktroFrame.Interactable = true
 	end)
 end)
-UI.CreateSwitch(MainPage, "跳过开场", SaveData.SkipIntro).Changed:Connect(function(value)
+UI.CreateSwitch(MainPage, "Skip Intro", SaveData.SkipIntro).Changed:Connect(function(value)
 	SaveData.SkipIntro = value
 end)
-UI.CreateDropdown(MainPage, "界面主题", {
-	"RGB/默认",
+UI.CreateDropdown(MainPage, "UI Theme", {
+	"RGB/Default",
 	"ALONE",
 	"Oxide",
 	"Patchma Hub",
 	"Genesis V4",
-	"深红",
+	"Crimson",
 	"r/masterhacker",
-	"辛普森",
-	"不死领主",
-	"浅色 RGB",
-	"浅色 ALONE",
+	"Homer Simpson",
+	"Immortality Lord",
+	"LIGHT RGB",
+	"LIGHT ALONE",
 	"Roserika",
-	"FastTracker II 蓝",
-	"樱花",
-	"逆樱花",
-	"80年代夜色",
-	"用户自定义",
+	"FastTracker II Blue",
+	"Cherry Blossom",
+	"Sakura",
+	"Tommorow Night 80s",
+	"User Defined (see README)",
 }, SaveData.UITheme).Changed:Connect(function(val)
 	SaveData.UITheme = val
 	SetUITheme(SaveData.UITheme)
@@ -2745,28 +2803,28 @@ end)
 UI.CreateSeparator(MainPage)
 
 local MusicName = UI.CreateText(MainPage, "", 15, Enum.TextXAlignment.Center)
-UI.CreateButton(MainPage, "随机界面音乐", 20).Activated:Connect(function()
+UI.CreateButton(MainPage, "Random UI Music", 20).Activated:Connect(function()
 	MusicPlayer.PlayMusic()
 end)
-local _musicnames = {"-- 选择 --"}
+local _musicnames = {"-- Choose --"}
 for i=1, #MusicPlayer.Database do
 	local hi = MusicPlayer.Database[i]
 	table.insert(_musicnames, hi[2])
 end
-local MusicSelect = UI.CreateDropdown(MainPage, "界面音乐", _musicnames, 1)
+local MusicSelect = UI.CreateDropdown(MainPage, "UI Music", _musicnames, 1)
 MusicSelect.Changed:Connect(function(val)
 	if val > 1 then
 		MusicSelect.Value = 1
 		MusicPlayer.PlayMusic(val - 1)
 	end
 end)
-UI.CreateSwitch(MainPage, "静音界面音乐", SaveData.MuteUIMusic).Changed:Connect(function(value)
+UI.CreateSwitch(MainPage, math.random(8) == 1 and "Mute @Noober 67s" or "Mute UI Music", SaveData.MuteUIMusic).Changed:Connect(function(value)
 	SaveData.MuteUIMusic = value
 end)
-UI.CreateSwitch(MainPage, "静音再动画音乐", SaveData.MuteReanimMusic).Changed:Connect(function(value)
+UI.CreateSwitch(MainPage, "Mute Reanim Music", SaveData.MuteReanimMusic).Changed:Connect(function(value)
 	SaveData.MuteReanimMusic = value
 end)
-UI.CreateSwitch(MainPage, "静音音效", SaveData.MuteUISound).Changed:Connect(function(value)
+UI.CreateSwitch(MainPage, "Mute Sounds", SaveData.MuteUISound).Changed:Connect(function(value)
 	SaveData.MuteUISound = value
 	if value then
 		UISound.Click.Volume = 0
@@ -2780,12 +2838,12 @@ UISound.MovesetMusic = Util.Instance("Sound", UIMainFrame)
 UISound.MovesetMusic.Looped = true
 UISound.MovesetMusic.PlaybackRegionsEnabled = false
 UISound.MovesetMusic.Volume = 1
-UISound.MovesetMusic.Name = "(未知)"
+UISound.MovesetMusic.Name = "(unknown)"
 UISound.MovesetMusic:SetAttribute("Volume", 1)
 local function SetOverrideMovesetMusic(soundid, soundname, volume, region)
 	if soundid then
 		UISound.MovesetMusic.SoundId = soundid
-		UISound.MovesetMusic.Name = soundname or "(未知)"
+		UISound.MovesetMusic.Name = soundname or "(unknown)"
 		if volume ~= nil then
 			UISound.MovesetMusic:SetAttribute("Volume", volume)
 		else
@@ -2817,12 +2875,12 @@ UISound.DanceMusic = Util.Instance("Sound", UIMainFrame)
 UISound.DanceMusic.Looped = true
 UISound.DanceMusic.PlaybackRegionsEnabled = false
 UISound.DanceMusic.Volume = 1
-UISound.DanceMusic.Name = "(未知)"
+UISound.DanceMusic.Name = "(unknown)"
 UISound.DanceMusic:SetAttribute("Volume", 1)
 local function SetOverrideDanceMusic(soundid, soundname, volume, region)
 	if soundid then
 		UISound.DanceMusic.SoundId = soundid
-		UISound.DanceMusic.Name = soundname or "(未知)"
+		UISound.DanceMusic.Name = soundname or "(unknown)"
 		if volume ~= nil then
 			UISound.DanceMusic:SetAttribute("Volume", volume)
 		else
@@ -2878,7 +2936,7 @@ AddToRenderStep(function()
 			UISound.Music.Volume = 1
 		end
 	end
-	MusicName.Text = `当前播放音乐:\n{musicname:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")}`
+	MusicName.Text = `Current Music Playing:\n{musicname:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")}`
 end)
 task.wait()
 
@@ -2896,7 +2954,7 @@ end)
 
 local function CreateHumanoidCharacter()
 	local char = Util.Instance("Model")
-	char.Name = "(C) 冷 V" .. LengyanVersion
+	char.Name = "(C) Uhhhhhh V" .. UhhhhhhVersion
 
 	local god = Util.Instance("ForceField", char)
 	god.Name = "heyy!! :33"
@@ -3038,9 +3096,9 @@ SaveData.UseAngularVelocity = not not SaveData.UseAngularVelocity
 SaveData.PatchmaVoidFloat = not not SaveData.PatchmaVoidFloat
 SaveData.PlaceholderTransparency = SaveData.PlaceholderTransparency or 0.5
 
-local _G_LengyanHat = {}
-pcall(function() _G.LengyanHat = _G_LengyanHat end)
-_G_LengyanHat.BindableEvent = Util.Instance("BindableEvent")
+local _G_Uhhhhhh = {}
+pcall(function() _G.Uhhhhhh = _G_Uhhhhhh end)
+_G_Uhhhhhh.BindableEvent = Util.Instance("BindableEvent")
 
 local Reanimate = {
 	Current = nil,
@@ -3257,7 +3315,7 @@ do
 		end
 		return false
 	end
-	do -- 控制
+	do -- Control
 		local self = Reanimate.Control
 		UserInputService.InputBegan:Connect(function(input, gpe)
 			if GuiService.MenuIsOpen then return end
@@ -3355,7 +3413,7 @@ do
 		UserInputService.WindowFocusReleased:Connect(resetInputDevices)
 		UserInputService.TextBoxFocusReleased:Connect(resetInputDevices)
 		GuiService.MenuOpened:Connect(resetInputDevices)
-		RunService:BindToRenderStep("Lengyan_Control", Enum.RenderPriority.Input.Value + 1, function(dt)
+		RunService:BindToRenderStep("Uhhhhhh_Control", Enum.RenderPriority.Input.Value + 1, function(dt)
 			if UserInputService:GetFocusedTextBox() then
 				resetInputDevices()
 			end
@@ -3400,7 +3458,7 @@ do
 			end
 		end)
 	end
-	do -- 相机
+	do -- Camera
 		local self = Reanimate.Camera
 		local function AdjustTouchPitchSensitivity(delta)
 			local pitch = Camera.CFrame:ToEulerAnglesYXZ()
@@ -3589,7 +3647,7 @@ do
 		MobileShiftlock.Activated:Connect(function()
 			Reanimate.Shiftlocked = Reanimate.ShiftlockEnabled and not Reanimate.Shiftlocked
 		end)
-		RunService:BindToRenderStep("Lengyan_Camera", Enum.RenderPriority.Camera.Value + 1, function(dt)
+		RunService:BindToRenderStep("Uhhhhhh_Camera", Enum.RenderPriority.Camera.Value + 1, function(dt)
 			self.VRMode = VRService.VREnabled
 			if UserInputService:GetFocusedTextBox() then
 				resetInputDevices()
@@ -3938,12 +3996,12 @@ Reanimate.CreateCharacter = function(InitCFrame)
 		end
 	end))
 	Reanimate.Character = RC
-	_G_LengyanHat.Character = RC
+	_G_Uhhhhhh.Character = RC
 end
 Reanimate.DestroyCharacter = function()
 	if Reanimate.Character then
 		Reanimate.Character = Reanimate.Character:Destroy()
-		_G_LengyanHat.Character = nil
+		_G_Uhhhhhh.Character = nil
 	end
 end
 
@@ -4126,13 +4184,13 @@ Util.PredictionFling = function(target)
 					cf = cf.Rotation + Vector3.new(cf.Position.X, target.Position.Y - 1, cf.Position.Z)
 				end
 			end
-			local oldpos = target:GetAttribute("_Lengyan_LastPosition")
+			local oldpos = target:GetAttribute("_Uhhhhhh_LastPosition")
 			if not oldpos then
 				oldpos = target.Position
-				target:SetAttribute("_Lengyan_LastPosition", oldpos)
+				target:SetAttribute("_Uhhhhhh_LastPosition", oldpos)
 			end
 			if (target.Position - oldpos).Magnitude > 200 then
-				target:SetAttribute("_Lengyan_LastPosition", nil)
+				target:SetAttribute("_Uhhhhhh_LastPosition", nil)
 				return cf, true
 			end
 			return cf, false
@@ -4160,7 +4218,7 @@ end
 SaveData.Reanimator = SaveData.Reanimator or {}
 
 local HatReanimator = {}
-HatReanimator.Name = "帽子"
+HatReanimator.Name = "Hats"
 SaveData.Reanimator.HatsCollide = not not SaveData.Reanimator.HatsCollide
 SaveData.Reanimator.HatsCollideMethod = SaveData.Reanimator.HatsCollideMethod or 6
 SaveData.Reanimator.IWantAllHats = not not SaveData.Reanimator.IWantAllHats
@@ -4187,20 +4245,28 @@ HatReanimator.UseNaNFling = true
 HatReanimator.HasPermadeath = false
 HatReanimator.HasHatCollide = false
 HatReanimator.RebuildRequired = true
-HatReanimator.HatMapSummary = "(还没有帽子映射，请点击 * 启动帽子复活 * 来构建)"
+HatReanimator.HatMapSummary = "(no hat map yet, please * Reanimate * to build)"
 HatReanimator.HatCFrameOverride = {}
 HatReanimator.Status = {
-	Permadeath = "(无状态)",
-	HatCollide = "(无状态)",
-	RespawnFling = "(无状态)",
+	Permadeath = "(no status)",
+	HatCollide = "(no status)",
+	RespawnFling = "(no status)",
 }
+
+-- ===== 新增：跟随玩家 + 配饰角度 =====
+HatReanimator.FollowEnabled = false
+HatReanimator.FollowTarget = nil
+HatReanimator.PerHatAngle = {}
+HatReanimator.AngleAdjustEnabled = false
+-- =====================================
+
 function HatReanimator.ShowHitboxes()
 	if Player.Character then
 		for _,v in Player.Character:GetChildren() do
 			if v:IsA("Accessory") then
 				local handle = v:FindFirstChild("Handle")
 				if handle and handle:IsA("BasePart") then
-					if handle:GetAttribute("_Lengyan_HasCollide") then
+					if handle:GetAttribute("_Uhhhhhh_HasCollide") then
 						Util.ShowPartHitbox(handle)
 					end
 				end
@@ -4251,82 +4317,82 @@ function HatReanimator.Fling(target, duration)
 end
 HatReanimator.DontFireCharAddOnThisChar = nil
 function HatReanimator.Config(parent)
-	UI.CreateText(parent, "永久复活已被修复，想要就打开这个开关", 10, Enum.TextXAlignment.Center)
-	UI.CreateSwitch(parent, "永久复活", HatReanimator.Permadeath).Changed:Connect(function(val)
+	UI.CreateText(parent, "permadeath is patched, enable this switch if you want to", 10, Enum.TextXAlignment.Center)
+	UI.CreateSwitch(parent, "Permadeath", HatReanimator.Permadeath).Changed:Connect(function(val)
 		HatReanimator.Permadeath = val
 		SaveData.Reanimator.HatsPatchmahub = not val
 	end)
-	UI.CreateDropdown(parent, "重生位置", {
-		"虚空",
-		"假人身后",
-		"附近随机传送",
-		"出生点",
+	UI.CreateDropdown(parent, "respawntp", {
+		"The Void",
+		"Behind ReanimCharacter",
+		"Randomtp near",
+		"At spawn",
 	}, HatReanimator.RespawnPosition + 1).Changed:Connect(function(val)
 		HatReanimator.RespawnPosition = val - 1
 		SaveData.Reanimator.RespawnPosition = val - 1
 	end)
-	UI.CreateSwitch(parent, "帽子碰撞", HatReanimator.HatCollide).Changed:Connect(function(val)
+	UI.CreateSwitch(parent, "Hat Collide", HatReanimator.HatCollide).Changed:Connect(function(val)
 		HatReanimator.HatCollide = val
 		SaveData.Reanimator.HatsCollide = val
 	end)
-	UI.CreateText(parent, "如果帽子碰撞时帽子掉虚空\nvvv 试试改这个 vvv", 10, Enum.TextXAlignment.Center)
-	UI.CreateDropdown(parent, "躯干偏移", {
-		"1 - ShownApe 的方法 (???)",
-		"2 - STEVE 方法 V1 (特定)",
-		"3 - 2 但用于背部配件",
-		"4 - 2 但用于肩部配件",
-		"5 - 2 但用于腰部配件",
-		"6 - STEVE 方法 V2 (较稳定)",
-		"7 - 6 但离虚空更远 (小心掉帽)",
-		"8 - STEVE 方法 V3 (最稳定)",
-		"9 - 实验性，请勿使用",
+	UI.CreateText(parent, "if ur hats get voided when u try to hat collide\nvvv try changing this vvv", 10, Enum.TextXAlignment.Center)
+	UI.CreateDropdown(parent, "Torso Offset", {
+		"1 - ShownApe's method (???)",
+		"2 - STEVE's method V1 (specific)",
+		"3 - 2 but for back accessories",
+		"4 - 2 but for shoulder accessories",
+		"5 - 2 but for waist accessories",
+		"6 - STEVE's method V2 (kinda stable)",
+		"7 - 6 but further from void (gl getting hatdrop)",
+		"8 - STEVE's method V3 (most stable)",
+		"9 - experimental do not use",
 	}, HatReanimator.HatCollideMethod + 1).Changed:Connect(function(val)
 		HatReanimator.HatCollideMethod = val - 1
 		SaveData.Reanimator.HatsCollideMethod = val - 1
 	end)
-	UI.CreateSwitch(parent, "保证所有帽子", HatReanimator.IWantAllHats).Changed:Connect(function(val)
+	UI.CreateSwitch(parent, "Ensure All Hats", HatReanimator.IWantAllHats).Changed:Connect(function(val)
 		HatReanimator.IWantAllHats = val
 		SaveData.Reanimator.IWantAllHats = val
 	end)
-	UI.CreateDropdown(parent, "保证帽子碰撞", {
-		"关闭",
-		"至少一个",
-		"至少 #帽子 - 2",
-		"至少 #帽子 - 1",
-		"全部",
+	UI.CreateDropdown(parent, "Ensure Hat Collide", {
+		"Off",
+		"Atleast one",
+		"Atleast #hats - 2",
+		"Atleast #hats - 1",
+		"ALL",
 	}, HatReanimator.IWantHatCollide + 1).Changed:Connect(function(val)
 		HatReanimator.IWantHatCollide = val - 1
 		SaveData.Reanimator.IWantHatCollide = val - 1
 	end)
-	UI.CreateText(parent, "vvv 别和目标甩飞一起用这两个选项... vvv", 10, Enum.TextXAlignment.Center)
-	UI.CreateSwitch(parent, "帽子甩飞", HatReanimator.HatFling).Changed:Connect(function(val)
+	UI.CreateText(parent, "vvv dont use these two options with target fling... vvv", 10, Enum.TextXAlignment.Center)
+	UI.CreateSwitch(parent, "Hat Fling", HatReanimator.HatFling).Changed:Connect(function(val)
 		HatReanimator.HatFling = val
 		SaveData.Reanimator.HatsFling = val
 	end)
-	UI.CreateText(parent, "^^^ ...除非你想走着甩飞或者... ^^^", 10, Enum.TextXAlignment.Center)
-	UI.CreateSwitch(parent, "帽子旋转甩飞", HatReanimator.HatSpin).Changed:Connect(function(val)
+	UI.CreateText(parent, "^^^ ...unless you want to walkfling or... ^^^", 10, Enum.TextXAlignment.Center)
+	UI.CreateSwitch(parent, "Hat Spin Fling", HatReanimator.HatSpin).Changed:Connect(function(val)
 		HatReanimator.HatSpin = val
 		SaveData.Reanimator.HatsSpin = val
 	end)
-	UI.CreateText(parent, "^^^ ...除非你想看起来像出bug ^^^", 10, Enum.TextXAlignment.Center)
-	UI.CreateText(parent, "vvv 别把工具甩飞和物理粘附一起用 vvv", 10, Enum.TextXAlignment.Center)
-	UI.CreateDropdown(parent, "目标甩飞方式", {
-		"禁用 (RP)",
-		"经典重生",
-		"最大帽子",
-		"全部帽子",
-		"使用工具Handle",
+	UI.CreateText(parent, "^^^ ...unless you want to look glitchy ^^^", 10, Enum.TextXAlignment.Center)
+	UI.CreateText(parent, "vvv dont use tool fling with physics glue btw vvv", 10, Enum.TextXAlignment.Center)
+	UI.CreateDropdown(parent, "Target Fling Method", {
+		"Disabled (RP)",
+		"Classic Respawn",
+		"Biggest Hat",
+		"All Hats",
+		"Use Tool Handle",
 	}, HatReanimator.FlingMethod + 2).Changed:Connect(function(val)
 		HatReanimator.FlingMethod = val - 2
 		SaveData.Reanimator.HatsFlingMethod = val - 2
 	end)
-	UI.CreateSwitch(parent, "手持工具", HatReanimator.ToolHolding).Changed:Connect(function(val)
+	UI.CreateSwitch(parent, "Tool Holding", HatReanimator.ToolHolding).Changed:Connect(function(val)
 		HatReanimator.ToolHolding = val
 		SaveData.Reanimator.NoToolHolding = val
 	end)
-	UI.CreateDropdown(parent, "工具动画方式", {
-		"禁用",
-		"剑",
+	UI.CreateDropdown(parent, "toolanim Method", {
+		"Disabled",
+		"Sword",
 	}, HatReanimator.ToolAnimMethod + 1).Changed:Connect(function(val)
 		HatReanimator.ToolAnimMethod = val - 1
 		SaveData.Reanimator.HatsToolAnim = val - 1
@@ -4342,16 +4408,124 @@ function HatReanimator.Config(parent)
 		end
 		HatReanimStatusText.Text = str:sub(1, -2)
 	end))
-	UI.CreateButton(parent, "重建帽子映射", 20).Activated:Connect(function()
+	UI.CreateButton(parent, "Rebuild Hat Map", 20).Activated:Connect(function()
 		HatReanimator.RebuildRequired = true
 	end)
-	UI.CreateText(parent, "^^^ 如果你的骨架建错了或换了新骨架 ^^^\n这个按钮就是给你用的", 10, Enum.TextXAlignment.Center)
-	UI.CreateButton(parent, "重生", 20).Activated:Connect(function()
+	UI.CreateText(parent, "^^^ if ur rig built wrong or u switched to a new rig ^^^\nthis button is for you", 10, Enum.TextXAlignment.Center)
+	UI.CreateButton(parent, "Respawn", 20).Activated:Connect(function()
 	end)
+
+	-- ============ 新增：跟随玩家 ============
+	UI.CreateSeparator(parent)
+	UI.CreateText(parent, "--- 跟随玩家 ---", 15, Enum.TextXAlignment.Center)
+	UI.CreateText(parent, "需要先开启帽子复活并点 * Reanimate *\n才会生效", 10, Enum.TextXAlignment.Center)
+
+	UI.CreateSwitch(parent, "启用跟随", HatReanimator.FollowEnabled).Changed:Connect(function(val)
+		HatReanimator.FollowEnabled = val
+	end)
+
+	local followStatus = UI.CreateText(parent, "未选择目标", 12, Enum.TextXAlignment.Center)
+	local playerListCanvas = UI.CreateScrollCanvas(parent, 110)
+	local playerRowCache = {}
+	local function refreshPlayerRows()
+		for _, v in playerRowCache do v:Destroy() end
+		table.clear(playerRowCache)
+		for _, p in ipairs(Players:GetPlayers()) do
+			if p ~= Player then
+				local btn, btnText = UI.CreateButton(playerListCanvas, p.Name, 18)
+				if HatReanimator.FollowTarget == p then
+					btnText.Text = "[✓] " .. p.Name
+				end
+				btn.Activated:Connect(function()
+					HatReanimator.FollowTarget = p
+					followStatus.Text = "当前跟随：" .. p.Name
+					refreshPlayerRows()
+				end)
+				table.insert(playerRowCache, btn.Parent)
+			end
+		end
+	end
+	refreshPlayerRows()
+	task.spawn(function()
+		while playerListCanvas.Parent do
+			task.wait(2)
+			refreshPlayerRows()
+		end
+	end)
+
+	UI.CreateButton(parent, "清除跟随目标", 20).Activated:Connect(function()
+		HatReanimator.FollowTarget = nil
+		followStatus.Text = "未选择目标"
+		refreshPlayerRows()
+	end)
+
+	-- ============ 新增：配饰角度调整 ============
+	UI.CreateSeparator(parent)
+	UI.CreateText(parent, "--- 配饰角度调整 ---", 15, Enum.TextXAlignment.Center)
+	UI.CreateText(parent, "开启后选配饰，拖滑块实时生效", 10, Enum.TextXAlignment.Center)
+
+	UI.CreateSwitch(parent, "启用角度调整", HatReanimator.AngleAdjustEnabled).Changed:Connect(function(val)
+		HatReanimator.AngleAdjustEnabled = val
+	end)
+
+	local accNames = {"-- 选择配饰 --"}
+	local accList = {}
+	local function rebuildAccList()
+		table.clear(accNames)
+		table.clear(accList)
+		table.insert(accNames, "-- 选择配饰 --")
+		local char = Player.Character
+		if char then
+			for _, v in ipairs(char:GetChildren()) do
+				if v:IsA("Accessory") then
+					table.insert(accNames, v.Name)
+					table.insert(accList, v)
+				end
+			end
+		end
+	end
+	rebuildAccList()
+
+	local selectedAcc = nil
+	local accSelect, _ = UI.CreateDropdown(parent, "配饰", accNames, 1)
+	accSelect.Changed:Connect(function(val)
+		if val == 1 then
+			selectedAcc = nil
+		else
+			selectedAcc = accList[val - 1]
+			if selectedAcc and HatReanimator.PerHatAngle[selectedAcc] then
+				local a = HatReanimator.PerHatAngle[selectedAcc]
+				angleX.Value = a.X or 0
+				angleY.Value = a.Y or 0
+				angleZ.Value = a.Z or 0
+			else
+				angleX.Value = 0
+				angleY.Value = 0
+				angleZ.Value = 0
+			end
+		end
+	end)
+
+	local angleX = UI.CreateSlider(parent, "X 旋转", 0, -180, 180, 5)
+	local angleY = UI.CreateSlider(parent, "Y 旋转", 0, -180, 180, 5)
+	local angleZ = UI.CreateSlider(parent, "Z 旋转", 0, -180, 180, 5)
+
+	local function applyAngle()
+		if not selectedAcc then return end
+		HatReanimator.PerHatAngle[selectedAcc] = {
+			X = angleX.Value,
+			Y = angleY.Value,
+			Z = angleZ.Value,
+		}
+	end
+	angleX.Changed:Connect(applyAngle)
+	angleY.Changed:Connect(applyAngle)
+	angleZ.Changed:Connect(applyAngle)
 end
 HatReanimator.GetHatMap = function() end
 HatReanimator.GetHatCFrameMeshAndTexture = function() end
 HatReanimator.GetAttachmentCFrame = function() end
+
 function HatReanimator.Start()
 	local LimbNames = {"Head", "Torso", "Left Arm", "Right Arm", "Left Leg", "Right Leg"}
 
@@ -4377,7 +4551,7 @@ function HatReanimator.Start()
 		FaceCenterAttachment = {"Head", CFrame.new(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
 	}
 
-	local HatMeshDatabase, HatNameDatabase, HatKnownAccessoriesDatabase = loadstring(readfile("LengyanHat/BuiltinModules/d_hatsmap.lua"))()
+	local HatMeshDatabase, HatNameDatabase, HatKnownAccessoriesDatabase = loadstring(readfile("UhhhhhhReanim/BuiltinModules/d_hatsmap.lua"))()
 
 	local function GetTools()
 		local tools = {}
@@ -4543,7 +4717,7 @@ function HatReanimator.Start()
 			p.CanTouch = false
 			p.CanQuery = false
 			p.Transparency = 0.75
-			p.Name = "(C) 冷 V" .. LengyanVersion .. " :: 帽子占位符"
+			p.Name = "(C) Uhhhhhh V" .. UhhhhhhVersion .. " :: HAT PLACEHOLDER"
 			for _,v in p:GetDescendants() do
 				if v:IsA("LuaSourceContainer") then
 					v:Destroy()
@@ -4593,8 +4767,8 @@ function HatReanimator.Start()
 	local HatMapCopy = {}
 	local function RefreshHatMap(Character)
 		local summary = ""
-		summary ..= "[帽子映射摘要]\n"
-		summary ..= "共找到帽子: " .. #CharHats .. "\n"
+		summary ..= "[Hat Map Summary]\n"
+		summary ..= "Total hats found: " .. #CharHats .. "\n"
 		local hatfors = {
 			Head = {},
 			Torso = {},
@@ -4613,15 +4787,15 @@ function HatReanimator.Start()
 				table.insert(hatfors[usefor], {hat, mapdata, level})
 			end
 		end
-		summary ..= "已分类 "
+		summary ..= "Classified "
 		for name,arr in hatfors do
 			table.sort(arr, function(a, b)
 				return a[3] < b[3]
 			end)
 			summary ..= #arr .. " " .. name .. ", "
 		end
-		summary = summary:sub(1, -3) .. "。\n"
-		summary ..= "骨架构建:\n"
+		summary = summary:sub(1, -3) .. ".\n"
+		summary ..= "Rig Building:\n"
 		local hatrig = {
 			Head = nil,
 			Torso = nil,
@@ -4631,43 +4805,43 @@ function HatReanimator.Start()
 			RightLeg = nil,
 		}
 		if #hatfors.Head > 0 then
-			summary ..= "  1 头部作为头部 (完美匹配)\n"
+			summary ..= "  1 Head as Head (perfect match)\n"
 			hatrig.Head = table.remove(hatfors.Head, 1)
 		end
 		if #hatfors.Torso > 0 then
-			summary ..= "  1 躯干作为躯干 (完美匹配)\n"
+			summary ..= "  1 Torso as Torso (perfect match)\n"
 			hatrig.Torso = table.remove(hatfors.Torso, 1)
 		end
 		if #hatfors.LeftArm > 0 then
-			summary ..= "  1 左臂作为左臂 (完美匹配)\n"
+			summary ..= "  1 LeftArm as LeftArm (perfect match)\n"
 			hatrig.LeftArm = table.remove(hatfors.LeftArm, 1)
 		end
 		if #hatfors.RightArm > 0 then
-			summary ..= "  1 右臂作为右臂 (完美匹配)\n"
+			summary ..= "  1 RightArm as RightArm (perfect match)\n"
 			hatrig.RightArm = table.remove(hatfors.RightArm, 1)
 		end
 		if #hatfors.LeftLeg > 0 then
-			summary ..= "  1 左腿作为左腿 (完美匹配)\n"
+			summary ..= "  1 LeftLeg as LeftLeg (perfect match)\n"
 			hatrig.LeftLeg = table.remove(hatfors.LeftLeg, 1)
 		end
 		if #hatfors.RightLeg > 0 then
-			summary ..= "  1 右腿作为右腿 (完美匹配)\n"
+			summary ..= "  1 RightLeg as RightLeg (perfect match)\n"
 			hatrig.RightLeg = table.remove(hatfors.RightLeg, 1)
 		end
 		local limbstobuild = {}
 		if not hatrig.LeftArm then
 			if #hatfors.RightArm > 0 then
 				hatrig.LeftArm = table.remove(hatfors.RightArm, 1)
-				summary ..= "  1 右臂作为左臂 (复用帽子)\n"
+				summary ..= "  1 RightArm as LeftArm (hat reused)\n"
 			elseif #hatfors.LeftLeg > 0 then
 				hatrig.LeftArm = table.remove(hatfors.LeftLeg, 1)
-				summary ..= "  1 左腿作为左臂 (复用帽子)\n"
+				summary ..= "  1 LeftLeg as LeftArm (hat reused)\n"
 			elseif #hatfors.RightLeg > 0 then
 				hatrig.LeftArm = table.remove(hatfors.RightLeg, 1)
-				summary ..= "  1 右腿作为左臂 (复用帽子)\n"
+				summary ..= "  1 RightLeg as LeftArm (hat reused)\n"
 			elseif #hatfors.ArmLeg > 0 then
 				hatrig.LeftArm = table.remove(hatfors.ArmLeg, 1)
-				summary ..= "  1 臂腿作为左臂 (用途匹配)\n"
+				summary ..= "  1 ArmLeg as LeftArm (purpose match)\n"
 			else
 				table.insert(limbstobuild, "Left Arm")
 			end
@@ -4675,16 +4849,16 @@ function HatReanimator.Start()
 		if not hatrig.RightArm then
 			if #hatfors.LeftArm > 0 then
 				hatrig.RightArm = table.remove(hatfors.LeftArm, 1)
-				summary ..= "  1 左臂作为右臂 (复用帽子)\n"
+				summary ..= "  1 LeftArm as RightArm (hat reused)\n"
 			elseif #hatfors.RightLeg > 0 then
 				hatrig.RightArm = table.remove(hatfors.RightLeg, 1)
-				summary ..= "  1 右腿作为右臂 (复用帽子)\n"
+				summary ..= "  1 RightLeg as RightArm (hat reused)\n"
 			elseif #hatfors.LeftLeg > 0 then
 				hatrig.RightArm = table.remove(hatfors.LeftLeg, 1)
-				summary ..= "  1 左腿作为右臂 (复用帽子)\n"
+				summary ..= "  1 LeftLeg as RightArm (hat reused)\n"
 			elseif #hatfors.ArmLeg > 0 then
 				hatrig.RightArm = table.remove(hatfors.ArmLeg, 1)
-				summary ..= "  1 臂腿作为右臂 (用途匹配)\n"
+				summary ..= "  1 ArmLeg as RightArm (purpose match)\n"
 			else
 				table.insert(limbstobuild, "Right Arm")
 			end
@@ -4692,16 +4866,16 @@ function HatReanimator.Start()
 		if not hatrig.LeftLeg then
 			if #hatfors.RightLeg > 0 then
 				hatrig.LeftLeg = table.remove(hatfors.RightLeg, 1)
-				summary ..= "  1 右腿作为左腿 (复用帽子)\n"
+				summary ..= "  1 RightLeg as LeftLeg (hat reused)\n"
 			elseif #hatfors.LeftArm > 0 then
 				hatrig.LeftLeg = table.remove(hatfors.LeftArm, 1)
-				summary ..= "  1 左臂作为左腿 (复用帽子)\n"
+				summary ..= "  1 LeftArm as LeftLeg (hat reused)\n"
 			elseif #hatfors.RightArm > 0 then
 				hatrig.LeftLeg = table.remove(hatfors.RightArm, 1)
-				summary ..= "  1 右臂作为左腿 (复用帽子)\n"
+				summary ..= "  1 LeftLeg as LeftLeg (hat reused)\n"
 			elseif #hatfors.ArmLeg > 0 then
 				hatrig.LeftLeg = table.remove(hatfors.ArmLeg, 1)
-				summary ..= "  1 臂腿作为左腿 (用途匹配)\n"
+				summary ..= "  1 ArmLeg as LeftLeg (purpose match)\n"
 			else
 				table.insert(limbstobuild, "Left Leg")
 			end
@@ -4709,16 +4883,16 @@ function HatReanimator.Start()
 		if not hatrig.RightLeg then
 			if #hatfors.LeftLeg > 0 then
 				hatrig.RightLeg = table.remove(hatfors.LeftLeg, 1)
-				summary ..= "  1 左腿作为右腿 (复用帽子)\n"
+				summary ..= "  1 LeftLeg as RightLeg (hat reused)\n"
 			elseif #hatfors.RightArm > 0 then
 				hatrig.RightLeg = table.remove(hatfors.RightArm, 1)
-				summary ..= "  1 右臂作为右腿 (复用帽子)\n"
+				summary ..= "  1 RightArm as RightLeg (hat reused)\n"
 			elseif #hatfors.LeftArm > 0 then
 				hatrig.RightLeg = table.remove(hatfors.LeftArm, 1)
-				summary ..= "  1 左臂作为右腿 (复用帽子)\n"
+				summary ..= "  1 LeftArm as RightLeg (hat reused)\n"
 			elseif #hatfors.ArmLeg > 0 then
 				hatrig.RightLeg = table.remove(hatfors.ArmLeg, 1)
-				summary ..= "  1 臂腿作为右腿 (用途匹配)\n"
+				summary ..= "  1 ArmLeg as RightLeg (purpose match)\n"
 			else
 				table.insert(limbstobuild, "Right Leg")
 			end
@@ -4770,14 +4944,14 @@ function HatReanimator.Start()
 					b[2].C0 = CFrame.new(0, 0.5, 0)
 					addhat(name, a)
 					addhat(name, b)
-					summary ..= "  2 方块作为 " .. name:gsub(" ", "") .. " (方块构建)\n"
+					summary ..= "  2 Block as " .. name:gsub(" ", "") .. " (block build)\n"
 				elseif #v == 1 then
 					addhat(name, v[1])
-					summary ..= "  1 方块作为 " .. name:gsub(" ", "") .. " (方块构建)\n"
+					summary ..= "  1 Block as " .. name:gsub(" ", "") .. " (block build)\n"
 				end
 			end
 		end
-		summary ..= "  " .. #hatfors.Accessories .. " 个已知配件\n"
+		summary ..= "  " .. #hatfors.Accessories .. " known accessories\n"
 		for _,acc in hatfors.Accessories do
 			addhat(nil, acc)
 		end
@@ -4816,7 +4990,7 @@ function HatReanimator.Start()
 				unused += 1
 			end
 		end
-		summary ..= "...剩下 " .. unused .. " 个未使用。"
+		summary ..= "...which leaves " .. unused .. " unused."
 		HatMap.Built = os.clock()
 		HatMapCopy = Util.DeepcopyTable(HatMap)
 		for _,v in CharHats do
@@ -4965,7 +5139,7 @@ function HatReanimator.Start()
 	local CurrentCharacter = nil
 
 	HatReanimator.RebuildRequired = true
-	HatReanimator.HatMapSummary = "(还没有帽子映射...)"
+	HatReanimator.HatMapSummary = "(no hat map yet...)"
 	table.clear(HatReanimator.FlingTargets)
 
 	local function SetSimulationRadius()
@@ -5017,8 +5191,8 @@ function HatReanimator.Start()
 		end
 		local netless = Reanimate.NetlessVelocity + (math.sin(timing * 0.5) + 1) / 2
 		local aligned = true
-		local lastcf = handle:GetAttribute("_Lengyan_LastPosition")
-		local claimtime = handle:GetAttribute("_Lengyan_ClaimTime")
+		local lastcf = handle:GetAttribute("_Uhhhhhh_LastPosition")
+		local claimtime = handle:GetAttribute("_Uhhhhhh_ClaimTime")
 		if typeof(lastcf) ~= "CFrame" then lastcf = handle.CFrame end
 		if not handle:IsGrounded() and IsNetworkOwner(handle) then
 			local newpos = newcf.Position
@@ -5086,8 +5260,8 @@ function HatReanimator.Start()
 			lastcf = handle.CFrame
 			aligned = false
 		end
-		handle:SetAttribute("_Lengyan_LastPosition", lastcf)
-		handle:SetAttribute("_Lengyan_ClaimTime", claimtime)
+		handle:SetAttribute("_Uhhhhhh_LastPosition", lastcf)
+		handle:SetAttribute("_Uhhhhhh_ClaimTime", claimtime)
 		return aligned
 	end
 
@@ -5145,12 +5319,12 @@ function HatReanimator.Start()
 				exists += 1
 				if handle.CanCollide then
 					collidable += 1
-					handle:SetAttribute("_Lengyan_HasCollide", true)
+					handle:SetAttribute("_Uhhhhhh_HasCollide", true)
 				end
 				handle.CanCollide = false
 			end
 		end
-		HatReanimator.Status.HatCollide = exists .. " 个帽子, " .. collidable .. " 个有碰撞。"
+		HatReanimator.Status.HatCollide = exists .. " hats, " .. collidable .. " has collide."
 		return collidable
 	end
 	local function calculatepartdestroytime(height, velocity, gravity)
@@ -5164,7 +5338,7 @@ function HatReanimator.Start()
 			RootPart.AssemblyLinearVelocity, RootPart.AssemblyAngularVelocity = Vector3.zero, Vector3.zero
 		end,
 		State1 = function(character, Humanoid, hats)
-			HatReanimator.Status.HatCollide = "RCDless 模式，正在对头部应用重新焊接"
+			HatReanimator.Status.HatCollide = "RCDless Mode, applying reweld to head method"
 			for _,v in hats do
 				SetAccoutrementState(v, BackendAccoutrementState.None)
 				local att = v:FindFirstChildOfClass("Attachment")
@@ -5232,14 +5406,14 @@ function HatReanimator.Start()
 				end))
 				SetAccoutrementState(v, BackendAccoutrementState.InCharacter)
 			end
-			HatReanimator.Status.HatCollide = #hats .. " 个帽子状态已清除！"
+			HatReanimator.Status.HatCollide = #hats .. " hats states ERADICATED!"
 		end,
 		State2 = function(character, hats)
 			local torso = character:FindFirstChild("Torso")
 			if torso then
 				torso.AncestryChanged:Wait()
 			end
-			HatReanimator.Status.HatCollide = "躯干已移除，状态解锁。"
+			HatReanimator.Status.HatCollide = "Torso removed, state unlocked."
 			for _,v in shownapehatdrop_lock do
 				v:Disconnect()
 			end
@@ -5303,14 +5477,14 @@ function HatReanimator.Start()
 				SetAccoutrementState(v, BackendAccoutrementState.InWorkspace)
 				SetAccoutrementState(v, BackendAccoutrementState.None)
 			end
-			HatReanimator.Status.HatCollide = #hats .. " 个帽子状态已清除！"
+			HatReanimator.Status.HatCollide = #hats .. " hats states ERADICATED!"
 		end,
 		State2 = function(character, hats)
 			local torso = character:FindFirstChild("Torso")
 			if torso then
 				torso.AncestryChanged:Wait()
 			end
-			HatReanimator.Status.HatCollide = "躯干已移除，状态解锁。"
+			HatReanimator.Status.HatCollide = "Torso removed, state unlocked."
 			for _,v in hats do
 				SetAccoutrementState(v, BackendAccoutrementState.Equipped)
 			end
@@ -5384,7 +5558,7 @@ function HatReanimator.Start()
 			end
 		end,
 		State1 = function(character, Humanoid, hats)
-			HatReanimator.Status.HatCollide = "帽子状态已设置。"
+			HatReanimator.Status.HatCollide = "Hat states set."
 			local head = character:FindFirstChild("Head")
 			for _,v in hats do
 				local handle = v:FindFirstChild("Handle")
@@ -5410,7 +5584,7 @@ function HatReanimator.Start()
 			if torso then
 				task.wait(calculatepartdestroytime(2, 26, workspace.Gravity) - 0.1)
 			end
-			HatReanimator.Status.HatCollide = "躯干已移除，我猜。"
+			HatReanimator.Status.HatCollide = "Torso removed, I speculate."
 			for _,v in hats do
 				SetAccoutrementState(v, BackendAccoutrementState.InWorkspace)
 			end
@@ -5463,7 +5637,7 @@ function HatReanimator.Start()
 			end
 		end,
 		State1 = function(character, Humanoid, hats)
-			HatReanimator.Status.HatCollide = "帽子状态已设置。"
+			HatReanimator.Status.HatCollide = "Hat states set."
 			local head = character:FindFirstChild("Head")
 			for _,v in hats do
 				local handle = v:FindFirstChild("Handle")
@@ -5481,7 +5655,7 @@ function HatReanimator.Start()
 		State2 = function(character, hats)
 			local hum = character:FindFirstChild("Humanoid")
 			local head = character:FindFirstChild("Right Arm")
-			HatReanimator.Status.HatCollide = "我们将保持 1 个部件。"
+			HatReanimator.Status.HatCollide = "We shall remain 1 part."
 			task.wait(0.41)
 			for _,v in hats do
 				SetAccoutrementState(v, BackendAccoutrementState.InWorkspace)
@@ -5512,10 +5686,10 @@ function HatReanimator.Start()
 		for _,v in character:GetDescendants() do
 			CharOnDesc(v)
 		end
-		HatReanimator.Status.ReanimState = "已重生。"
-		HatReanimator.Status.Permadeath = "检测到重生。"
-		HatReanimator.Status.HatCollide = "检测到重生。"
-		HatReanimator.Status.RespawnFling = "检测到重生。"
+		HatReanimator.Status.ReanimState = "Respawned."
+		HatReanimator.Status.Permadeath = "Respawn detected."
+		HatReanimator.Status.HatCollide = "Respawn detected."
+		HatReanimator.Status.RespawnFling = "Respawn detected."
 		local hatcols = HatReanimator.HatCollide
 		local perma = HatReanimator.Permadeath
 		HatReanimator.HasPermadeath, HatReanimator.HasHatCollide = perma, hatcols
@@ -5588,18 +5762,18 @@ function HatReanimator.Start()
 			RootPosition = Vector3.new(RootPosition.X, FallenPartsDestroyHeight, RootPosition.Z)
 		end
 		if hatcols then
-			HatReanimator.Status.HatCollide = "等待永久复活。"
+			HatReanimator.Status.HatCollide = "Waiting for Permadeath."
 		else
-			HatReanimator.Status.HatCollide = "已禁用，无需操作！"
+			HatReanimator.Status.HatCollide = "Disabled, nothing to do!"
 		end
 		local cdsbeffect = os.clock()
 		local cdsbtime = os.clock()
 		if perma then
-			HatReanimator.Status.Permadeath = "已发出 CDSB 信号。"
+			HatReanimator.Status.Permadeath = "Fired CDSB Signal."
 			cdsbeffect += Players.RespawnTime
 		end
-		HatReanimator.Status.RespawnFling = "正在甩飞目标..."
-		if HatReanimator.UseNaNFling and HatReanimator.FlingTargets[1] then
+		HatReanimator.Status.RespawnFling = "Flinging targets..."
+		if LimbReanimator and LimbReanimator.UseNaNFling and HatReanimator.FlingTargets[1] then
 			task.wait(0.2)
 		end
 		while character:IsDescendantOf(workspace) do
@@ -5629,7 +5803,7 @@ function HatReanimator.Start()
 			end
 			if flingtarget then
 				if not RootPart:IsGrounded() then
-					if HatReanimator.UseNaNFling then
+					if LimbReanimator and LimbReanimator.UseNaNFling then
 						RootPart.CFrame = CFrame.new(flingcf.Position + Vector3.new(0, 0, math.random(0, 1) * 0.005)) * CFrame.Angles(0, os.clock() * 15, 0)
 						RootPart.Velocity, RootPart.RotVelocity = Vector3.zero, Vector3.zero
 					else
@@ -5639,7 +5813,7 @@ function HatReanimator.Start()
 					pcall(sethiddenproperty, RootPart, "PhysicsRepRootPart", Reanimate.UsePhysicsRepRootPart and Util.PredictionFlingPart(flingtarget.Target) or nil)
 				end
 				Humanoid:ChangeState(Enum.HumanoidStateType.Freefall)
-				if HatReanimator.UseNaNFling then
+				if LimbReanimator and LimbReanimator.UseNaNFling then
 					pcall(sethiddenproperty, Humanoid, "MoveDirectionInternal", Vector3.new(0/0, 0/0, 0/0))
 				end
 			elseif #HatReanimator.FlingTargets == 0 then
@@ -5655,7 +5829,7 @@ function HatReanimator.Start()
 			return
 		end
 		pcall(sethiddenproperty, RootPart, "PhysicsRepRootPart", nil)
-		HatReanimator.Status.RespawnFling = "完成。"
+		HatReanimator.Status.RespawnFling = "Done."
 		local lgloop = nil
 		local bringconns = {}
 		local readystate = 0
@@ -5676,18 +5850,18 @@ function HatReanimator.Start()
 			selhatcol.HRPTP(dt, character, Humanoid, RootPosition, RootPart, readystate)
 		end)
 		if hatcols then task.wait(0.2) end
-		HatReanimator.Status.ReanimState = "正在加载永久复活。"
+		HatReanimator.Status.ReanimState = "Loading Permadeath."
 		if perma then
-			HatReanimator.Status.Permadeath = "否。"
+			HatReanimator.Status.Permadeath = "no."
 		else
-			HatReanimator.Status.Permadeath = "已禁用，无需操作。"
+			HatReanimator.Status.Permadeath = "Disabled, nothing to do."
 		end
 		if not character:IsDescendantOf(workspace) then
 			lgloop:Disconnect()
 			return
 		end
 		readystate = 1
-		HatReanimator.Status.ReanimState = "再动画状态: 1"
+		HatReanimator.Status.ReanimState = "Reanimate State: 1"
 		if not selhatcol.ColLimb then
 			Humanoid:ChangeState(Enum.HumanoidStateType.Physics)
 		end
@@ -5701,7 +5875,7 @@ function HatReanimator.Start()
 			return
 		end
 		readystate = 2
-		HatReanimator.Status.ReanimState = "再动画状态: 2"
+		HatReanimator.Status.ReanimState = "Reanimate State: 2"
 		for _,hat in CharHats do
 			local handle = hat:FindFirstChild("Handle")
 			if handle and handle:IsA("BasePart") then
@@ -5722,7 +5896,7 @@ function HatReanimator.Start()
 						w.Parent = handle
 					end
 				end
-				handle:SetAttribute("_Lengyan_HasCollide", false)
+				handle:SetAttribute("_Uhhhhhh_HasCollide", false)
 			end
 		end
 		Humanoid:ChangeState(Enum.HumanoidStateType.FallingDown)
@@ -5742,7 +5916,7 @@ function HatReanimator.Start()
 		Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
 		Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
 		readystate = 3
-		HatReanimator.Status.ReanimState = "再动画状态: 3"
+		HatReanimator.Status.ReanimState = "Reanimate State: 3"
 		IsRespawning = false
 		if hatcols then
 			local stateunlocked = false
@@ -5764,7 +5938,7 @@ function HatReanimator.Start()
 				end
 				if hatcols and collidable <= atleast then
 					if perma then
-						HatReanimator.Status.Permadeath = "无帽子碰撞。正在重生！"
+						HatReanimator.Status.Permadeath = "No hat collide. Respawning!"
 						Respawn()
 					end
 				end
@@ -5786,17 +5960,17 @@ function HatReanimator.Start()
 		if not character:IsDescendantOf(workspace) then
 			return
 		end
-		HatReanimator.Status.ReanimState = "完成。"
+		HatReanimator.Status.ReanimState = "Done."
 		if #CharHats == 0 then
 			if perma then
-				HatReanimator.Status.Permadeath = "所有帽子死亡。正在重生！"
+				HatReanimator.Status.Permadeath = "All hats died. Respawning!"
 				Respawn()
 			end
 		end
 		if perma and hatcols then
 			if HatReanimator.IWantAllHats and NumHats > #CharHats then
 				if perma then
-					HatReanimator.Status.Permadeath = "部分帽子死亡。正在重生！"
+					HatReanimator.Status.Permadeath = "Some hats died. Respawning!"
 					Respawn()
 				end
 			else
@@ -5841,7 +6015,7 @@ function HatReanimator.Start()
 		RunService.PreSimulation:Wait()
 		workspace.FallenPartsDestroyHeight = 0/0
 		SetSimulationRadius()
-		debug.profilebegin("Lengyan > CharacterCheck")
+		debug.profilebegin("Uhhhhhh > CharacterCheck")
 		local ReanimOkay = false
 		local Character = Player.Character
 		local ReanimCharacter = Reanimate.Character
@@ -5852,7 +6026,7 @@ function HatReanimator.Start()
 				end
 				if HatReanimator.HasPermadeath and not IsRespawning and HatReanimator.IWantAllHats then
 					if NumHats > #CharHats then
-						HatReanimator.Status.Permadeath = "部分帽子死亡。正在重生！"
+						HatReanimator.Status.Permadeath = "Some hats died. Respawning!"
 						Respawn()
 					else
 						local midpoint = Vector3.zero
@@ -5872,7 +6046,7 @@ function HatReanimator.Start()
 						midpoint /= hatsowned
 						for _,v in hatsnotowned do
 							if (v.Position - midpoint).Magnitude > 2000 then
-								HatReanimator.Status.Permadeath = "部分帽子无法声明。正在重生！"
+								HatReanimator.Status.Permadeath = "Some hats unclaimable. Respawning!"
 								Respawn()
 								break
 							end
@@ -5899,7 +6073,7 @@ function HatReanimator.Start()
 			end
 		end
 		debug.profileend()
-		debug.profilebegin("Lengyan > BaseParts")
+		debug.profilebegin("Uhhhhhh > BaseParts")
 		local RCRootPart = ReanimCharacter and ReanimCharacter:FindFirstChild("HumanoidRootPart")
 		local ltm = Reanimate.LocalTransparencyModifier
 		for _,v in BaseParts do
@@ -5907,7 +6081,7 @@ function HatReanimator.Start()
 			v.LocalTransparencyModifier = ltm
 		end
 		debug.profileend()
-		debug.profilebegin("Lengyan > ReanimOkay")
+		debug.profilebegin("Uhhhhhh > ReanimOkay")
 		local t = os.clock()
 		local slocked = {}
 		if ReanimOkay then
@@ -5923,7 +6097,7 @@ function HatReanimator.Start()
 				local toolactivate = false
 				local toolactivated = nil
 				local handlethese = {}
-				debug.profilebegin("Lengyan > CharTools")
+				debug.profilebegin("Uhhhhhh > CharTools")
 				for _,v in CharTools do
 					local handle = v:FindFirstChild("Handle")
 					if handle and handle:IsA("BasePart") then
@@ -5941,14 +6115,14 @@ function HatReanimator.Start()
 							claimoverride += Vector3.new(0, -workspace.Gravity, 0) * 0.5 * a * a
 						end
 					end
-					if not v:GetAttribute("_Lengyan_ActivateConn") then
-						v:SetAttribute("_Lengyan_ActivateConn", true)
+					if not v:GetAttribute("_Uhhhhhh_ActivateConn") then
+						v:SetAttribute("_Uhhhhhh_ActivateConn", true)
 						v.Activated:Connect(function()
-							v:SetAttribute("_Lengyan_Activate", true)
+							v:SetAttribute("_Uhhhhhh_Activate", true)
 						end)
 					end
-					if v:GetAttribute("_Lengyan_Activate") then
-						v:SetAttribute("_Lengyan_Activate", nil)
+					if v:GetAttribute("_Uhhhhhh_Activate") then
+						v:SetAttribute("_Uhhhhhh_Activate", nil)
 						toolactivate = true
 						toolactivated = v
 					end
@@ -5992,8 +6166,8 @@ function HatReanimator.Start()
 							Debris:AddItem(sound, 1)
 						end
 						if toolactivate then
-							local newuse = FakeTool:GetAttribute("_Lengyan_Sword_CD") or 0
-							local lastuse = FakeTool:GetAttribute("_Lengyan_Sword_LU") or 0
+							local newuse = FakeTool:GetAttribute("_Uhhhhhh_Sword_CD") or 0
+							local lastuse = FakeTool:GetAttribute("_Uhhhhhh_Sword_LU") or 0
 							if t > newuse then
 								if t - lastuse < 0.2 then
 									newuse = t + 1
@@ -6035,8 +6209,8 @@ function HatReanimator.Start()
 								end
 								lastuse = t
 							end
-							FakeTool:SetAttribute("_Lengyan_Sword_CD", newuse)
-							FakeTool:SetAttribute("_Lengyan_Sword_LU", lastuse)
+							FakeTool:SetAttribute("_Uhhhhhh_Sword_CD", newuse)
+							FakeTool:SetAttribute("_Uhhhhhh_Sword_LU", lastuse)
 						end
 					end
 				else
@@ -6044,7 +6218,7 @@ function HatReanimator.Start()
 					if FakeTool then FakeTool:Destroy() end
 				end
 				debug.profileend()
-				debug.profilebegin("Lengyan > FlingLogic")
+				debug.profilebegin("Uhhhhhh > FlingLogic")
 				local flingtarget = nil
 				local flingcf, flinged = CFrame.identity, true
 				if t > letitgo then
@@ -6083,7 +6257,7 @@ function HatReanimator.Start()
 						local biggestarea = 0
 						for _,hat in CharHats do
 							local handle = hat:FindFirstChild("Handle")
-							if handle and handle:IsA("BasePart") and handle:GetAttribute("_Lengyan_HasCollide") and IsNetworkOwner(handle) then
+							if handle and handle:IsA("BasePart") and handle:GetAttribute("_Uhhhhhh_HasCollide") and IsNetworkOwner(handle) then
 								local area = handle.Size.X * handle.Size.Y * handle.Size.Z
 								if biggestarea < area then
 									biggest = handle
@@ -6103,7 +6277,7 @@ function HatReanimator.Start()
 						for _,hat in CharHats do
 							local handle = hat:FindFirstChild("Handle")
 							if handle and handle:IsA("BasePart") then
-								if handle:GetAttribute("_Lengyan_HasCollide") then
+								if handle:GetAttribute("_Uhhhhhh_HasCollide") then
 									collide = true
 								end
 							end
@@ -6128,7 +6302,7 @@ function HatReanimator.Start()
 					end
 				end
 				debug.profileend()
-				debug.profilebegin("Lengyan > Alignments")
+				debug.profilebegin("Uhhhhhh > Alignments")
 				for _,hat in CharHats do
 					local handle = hat:FindFirstChild("Handle")
 					if handle and handle:IsA("BasePart") then
@@ -6158,6 +6332,25 @@ function HatReanimator.Start()
 								local tcf, tvel = GetHatMappedCFrame(mapped)
 								tcf = tcf or RCRootPart.CFrame * CFrame.new(0, 5, 0)
 								tvel = tvel or Vector3.zero
+
+								-- ===== 新增：跟随玩家 =====
+								if HatReanimator.FollowEnabled and HatReanimator.FollowTarget then
+									local tp = HatReanimator.FollowTarget
+									if tp and tp.Parent and tp.Character then
+										local thrp = tp.Character:FindFirstChild("HumanoidRootPart")
+										if thrp then
+											tcf = thrp.CFrame * CFrame.new(0, 3, 0)
+											tvel = thrp.Velocity
+										end
+									end
+								end
+
+								-- ===== 新增：配饰角度实时调整 =====
+								if HatReanimator.AngleAdjustEnabled and HatReanimator.PerHatAngle[hat] then
+									local a = HatReanimator.PerHatAngle[hat]
+									tcf = tcf * CFrame.Angles(math.rad(a.X or 0), math.rad(a.Y or 0), math.rad(a.Z or 0))
+								end
+
 								local aligned = SetUACFrameNetless(handle, dt, tcf, tvel, HatReanimator.HatFling, HatReanimator.HatSpin)
 								if aligned then
 									table.insert(slocked, handle)
@@ -6182,7 +6375,7 @@ function HatReanimator.Start()
 				CurrentCharacter = nil
 			end
 		end
-		debug.profilebegin("Lengyan > Placeholders")
+		debug.profilebegin("Uhhhhhh > Placeholders")
 		for _,ref in HatRefs do
 			local ph = ref.PH
 			if ph then
@@ -6206,7 +6399,7 @@ function HatReanimator.Start()
 		end
 		debug.profileend()
 		RunService.PreRender:Wait()
-		debug.profilebegin("Lengyan > PreRender")
+		debug.profilebegin("Uhhhhhh > PreRender")
 		if RCRootPart and Reanimate:ShouldRotationType() then
 			Reanimate:CameraLockCharacter()
 		end
@@ -6251,7 +6444,7 @@ local function ReanimateFling(target, duration)
 	end
 	return false
 end
-_G_LengyanHat.Fling = function(part)
+_G_Uhhhhhh.Fling = function(part)
 	if part and part.Parent then
 		if part:IsA("BasePart") then
 			part = part.Parent
@@ -6267,44 +6460,44 @@ _G_LengyanHat.Fling = function(part)
 end
 
 do
-	local ReanimatorConfigTitle = UI.CreateText(MainPage, "-=+ 帽子复活器配置 +=-", 15, Enum.TextXAlignment.Center)
+	local ReanimatorConfigTitle = UI.CreateText(MainPage, "-=+ Hats Reanimator Config +=-", 15, Enum.TextXAlignment.Center)
 	local SelectedReanimator = HatReanimator
 	local ReanimatorConfigCanvas = UI.CreateCanvas(MainPage)
 	SelectedReanimator.Config(ReanimatorConfigCanvas)
 	UI.CreateText(MainPage, " ", 5, Enum.TextXAlignment.Center)
-	local ReanimateText = UI.CreateText(MainPage, "运行状态：无", 15, Enum.TextXAlignment.Center)
-	local ReanimateStartButton, ReanimateStartButtonText = UI.CreateButton(MainPage, "* 启动帽子复活 *", 20)
+	local ReanimateText = UI.CreateText(MainPage, "Running: NONE", 15, Enum.TextXAlignment.Center)
+	local ReanimateStartButton, ReanimateStartButtonText = UI.CreateButton(MainPage, "* Reanimate *", 20)
 	ReanimateStartButton.Activated:Connect(function()
 		ReanimateStartButton.Interactable = false
 		if Reanimate.Current then
-			ReanimateStartButtonText.Text = "停止中..."
+			ReanimateStartButtonText.Text = "Stopping..."
 			Reanimate.Stopping = true
 			repeat task.wait() until not Reanimate.Stopping
 			Reanimate.Current.Running = nil
 			Reanimate.Current = nil
 			HumanoidLASetHookState(false)
-			ReanimateText.Text = "运行状态：无"
+			ReanimateText.Text = "Running: NONE"
 			task.wait(1)
-			ReanimateStartButtonText.Text = "* 启动帽子复活 *"
+			ReanimateStartButtonText.Text = "* Reanimate *"
 		else
-			ReanimateStartButtonText.Text = "启动中..."
+			ReanimateStartButtonText.Text = "Starting..."
 			Reanimate.Starting = true
 			Reanimate.Current = SelectedReanimator
 			HumanoidLASetHookState(Reanimate.UseLoadAnimationHook)
-			ReanimateText.Text = "运行状态：" .. Reanimate.Current.Name
+			ReanimateText.Text = "Running: " .. Reanimate.Current.Name
 			task.spawn(Reanimate.Current.Start)
 			repeat task.wait() until not Reanimate.Starting
 			Reanimate.Current.Running = true
 			task.wait(1)
-			ReanimateStartButtonText.Text = "* 停止帽子复活 *"
+			ReanimateStartButtonText.Text = "* Deanimate *"
 		end
 		ReanimateStartButton.Interactable = true
 	end)
-	UI.CreateButton(MainPage, "显示再动画碰撞箱", 15).Activated:Connect(function()
+	UI.CreateButton(MainPage, "Show Reanimate Hitboxes", 15).Activated:Connect(function()
 		if not Reanimate.Character then return end
 		ReanimateShowHitboxes()
 	end)
-	UI.CreateButton(MainPage, "刷新再动画角色", 10).Activated:Connect(function()
+	UI.CreateButton(MainPage, "Refresh Reanimate Character", 10).Activated:Connect(function()
 		if not Reanimate.Character then return end
 		Reanimate.CreateCharacter()
 	end)
@@ -6312,44 +6505,44 @@ end
 UI.CreateSeparator(MainPage)
 
 do
-	UI.CreateText(MainPage, "再动画角色设置", 15, Enum.TextXAlignment.Center)
-	UI.CreateSwitch(MainPage, "无限跳跃", Reanimate.InfiniteJump).Changed:Connect(function(val)
+	UI.CreateText(MainPage, "Reanimate Character Settings", 15, Enum.TextXAlignment.Center)
+	UI.CreateSwitch(MainPage, "Infinite Jump", Reanimate.InfiniteJump).Changed:Connect(function(val)
 		Reanimate.InfiniteJump = val
 		SaveData.NoInfiniteJump = not val
 	end)
-	UI.CreateSwitch(MainPage, "穿墙", Reanimate.Noclip).Changed:Connect(function(val)
+	UI.CreateSwitch(MainPage, "Noclip", Reanimate.Noclip).Changed:Connect(function(val)
 		Reanimate.Noclip = val
 		SaveData.NoclipEnabled = val
 	end)
-	UI.CreateSwitch(MainPage, "平滑相机", Reanimate.SmoothCam).Changed:Connect(function(val)
+	UI.CreateSwitch(MainPage, "Smooth Camera", Reanimate.SmoothCam).Changed:Connect(function(val)
 		Reanimate.SmoothCam = val
 		SaveData.NoSmoothCam = not val
 	end)
-	UI.CreateSwitch(MainPage, "第一人称身体", Reanimate.FirstPersonBody).Changed:Connect(function(val)
+	UI.CreateSwitch(MainPage, "First Person Body", Reanimate.FirstPersonBody).Changed:Connect(function(val)
 		Reanimate.FirstPersonBody = val
 		SaveData.FirstPersonBody = not val
 	end)
-	UI.CreateSwitch(MainPage, "允许锁定视角", Reanimate.ShiftlockEnabled).Changed:Connect(function(val)
+	UI.CreateSwitch(MainPage, "Allow Shiftlock", Reanimate.ShiftlockEnabled).Changed:Connect(function(val)
 		Reanimate.ShiftlockEnabled = val
 		SaveData.ShiftlockDisabled = not val
 	end)
-	UI.CreateSwitch(MainPage, "可坐椅子", Reanimate.SeatSit).Changed:Connect(function(val)
+	UI.CreateSwitch(MainPage, "Can Sit on Seats", Reanimate.SeatSit).Changed:Connect(function(val)
 		Reanimate.SeatSit = val
 		SaveData.NoSeatSitEnabled = not val
 	end)
-	UI.CreateSwitch(MainPage, "可拾取工具", Reanimate.ToolGrab).Changed:Connect(function(val)
+	UI.CreateSwitch(MainPage, "Can Pickup Tools", Reanimate.ToolGrab).Changed:Connect(function(val)
 		Reanimate.ToolGrab = val
 		SaveData.ToolGrabEnabled = val
 	end)
-	UI.CreateSwitch(MainPage, "重力随体型缩放", Reanimate.ScaleGravity).Changed:Connect(function(val)
+	UI.CreateSwitch(MainPage, "Apply Scale to Gravity", Reanimate.ScaleGravity).Changed:Connect(function(val)
 		Reanimate.ScaleGravity = val
 		SaveData.ScaleGravityEnabled = val
 	end)
-	UI.CreateSwitch(MainPage, "虚空悬浮", Reanimate.PatchmaVoidFloat).Changed:Connect(function(val)
+	UI.CreateSwitch(MainPage, "Void Float", Reanimate.PatchmaVoidFloat).Changed:Connect(function(val)
 		Reanimate.PatchmaVoidFloat = val
 		SaveData.PatchmaVoidFloat = val
 	end)
-	UI.CreateButton(MainPage, "强制坐下（按两次移除陀螺仪）", 20).Activated:Connect(function()
+	UI.CreateButton(MainPage, "Force Sit (2x to remove gyro)", 20).Activated:Connect(function()
 		local ch = Reanimate.Character or Player.Character
 		if ch then
 			local h = ch:FindFirstChildOfClass("Humanoid")
@@ -6371,14 +6564,14 @@ do
 			end
 		end
 	end)
-	local CharacterScaleSlider = UI.CreateSlider(MainPage, "角色体型", Reanimate.CharacterScale, 0.5, 5, 0.5)
+	local CharacterScaleSlider = UI.CreateSlider(MainPage, "Character Scale", Reanimate.CharacterScale, 0.5, 5, 0.5)
 	CharacterScaleSlider.Changed:Connect(function(val)
 		val = math.clamp(val, 0.001, 20)
 		CharacterScaleSlider.Value = val
 		Reanimate.CharacterScale = val
 		SaveData.CharacterScale = val
 	end)
-	local PlaceholderTransparencySlider = UI.CreateSlider(MainPage, "占位符透明度", Reanimate.PlaceholderTransparency, 0, 1, 0.05)
+	local PlaceholderTransparencySlider = UI.CreateSlider(MainPage, "Placeholders", Reanimate.PlaceholderTransparency, 0, 1, 0.05)
 	PlaceholderTransparencySlider.Changed:Connect(function(val)
 		val = math.clamp(val, 0, 1)
 		PlaceholderTransparencySlider.Value = val
@@ -6398,11 +6591,11 @@ do
 			end
 		end
 	end
-	UI.CreateSwitch(MainPage, "点击甩飞", Reanimate.ClickFling).Changed:Connect(function(val)
+	UI.CreateSwitch(MainPage, "Click Fling", Reanimate.ClickFling).Changed:Connect(function(val)
 		Reanimate.ClickFling = val
 		SaveData.ClickFlingEnabled = val
 	end)
-	UI.CreateSwitch(MainPage, "按键+点击传送", Reanimate.CtrlClick).Changed:Connect(function(val)
+	UI.CreateSwitch(MainPage, "Key+Click Teleport", Reanimate.CtrlClick).Changed:Connect(function(val)
 		Reanimate.CtrlClick = val
 		SaveData.CtrlClickEnabled = val
 	end)
@@ -6433,15 +6626,15 @@ do
 		end
 	end
 	updatekey()
-	UI.CreateDropdown(MainPage, "传送键", {
-		"左 Ctrl（默认）", "inno 的选择（']'）", "Tab（不知道）",
-		"Z", "X（PC 上我喜欢这个）", "F", "T",
+	UI.CreateDropdown(MainPage, "TP Key", {
+		"Left Ctrl (default)", "inno's pick (']')", "Tab (idk)",
+		"Z", "X (i like this one on pc)", "F", "T",
 	}, SaveData.CtrlClickKey).Changed:Connect(function(val)
 		SaveData.CtrlClickKey = val
 		updatekey()
 	end)
 	local Maus = Player:GetMouse()
-	local HoldingCtrl = UI.CreateSwitch(MainPage, "传送键按住", false)
+	local HoldingCtrl = UI.CreateSwitch(MainPage, "TP Key Held", false)
 	local _lastclick = nil
 	local _lastclickgpe = false
 	local _lastclicktick = 0
@@ -6474,7 +6667,7 @@ do
 					end
 				end
 				if Reanimate.ClickFling then
-					if Maus.Target and Maus.Target.Parent then
+					if Maus.Target and Maus.Target.Parent then 
 						local target = Maus.Target.Parent
 						if target:IsA("Accessory") then
 							target = target.Parent
@@ -6487,7 +6680,7 @@ do
 			end
 		end
 	end)
-	UI.CreateButton(MainPage, "传送到 0, 最高, 0", 20).Activated:Connect(function()
+	UI.CreateButton(MainPage, "Teleport to 0, highest, 0", 20).Activated:Connect(function()
 		local hit = workspace:Raycast(Vector3.new(0, 4500, 0), Vector3.new(0, -4500 + FallenPartsDestroyHeight, 0))
 		if hit and hit.Position == hit.Position then
 			ReanimCharacterTeleport(hit.Position + Vector3.new(0, 5, 0))
@@ -6495,20 +6688,20 @@ do
 			ReanimCharacterTeleport(Vector3.new(0, 0, 0))
 		end
 	end)
-	UI.CreateButton(MainPage, "传送到“上次安全点”", 20).Activated:Connect(function()
+	UI.CreateButton(MainPage, "Teleport to 'LastSafe'", 20).Activated:Connect(function()
 		ReanimCharacterTeleport(Vector3.new(0, FallenPartsDestroyHeight - 5000, 0))
 	end)
-	local TeleportToPlayerSel = UI.CreateText(MainPage, "<font color=\"#AAAAAA\">（输入玩家名）</font>", 15, Enum.TextXAlignment.Center)
-	local TeleportToPlayer = UI.CreateTextbox(MainPage, "", "传送到玩家", 20)
+	local TeleportToPlayerSel = UI.CreateText(MainPage, "<font color=\"#AAAAAA\">(enter a player name)</font>", 15, Enum.TextXAlignment.Center)
+	local TeleportToPlayer = UI.CreateTextbox(MainPage, "", "Teleport To Player", 20)
 	TeleportToPlayer:GetPropertyChangedSignal("Text"):Connect(function()
 		local sel = Util.QueryPlayerSelector(TeleportToPlayer.Text)
 		if sel then
 			TeleportToPlayerSel.Text = `{sel.DisplayName} (@{sel.Name})`
 		else
 			if #TeleportToPlayer.Text == 0 then
-				TeleportToPlayerSel.Text = "<font color=\"#AAAAAA\">（输入玩家名）</font>"
+				TeleportToPlayerSel.Text = "<font color=\"#AAAAAA\">(enter a player name)</font>"
 			else
-				TeleportToPlayerSel.Text = "<font color=\"#FF7777\">（未找到玩家）</font>"
+				TeleportToPlayerSel.Text = "<font color=\"#FF7777\">(player not found)</font>"
 			end
 		end
 	end)
@@ -6527,81 +6720,250 @@ do
 end
 UI.CreateSeparator(MainPage)
 do
-	UI.CreateText(MainPage, "内部设置", 15, Enum.TextXAlignment.Center)
-	UI.CreateSwitch(MainPage, "挂钩 LoadAnimation", Reanimate.UseLoadAnimationHook).Changed:Connect(function(val)
+	UI.CreateText(MainPage, "Internals Settings", 15, Enum.TextXAlignment.Center)
+	UI.CreateSwitch(MainPage, "Hook LoadAnimation", Reanimate.UseLoadAnimationHook).Changed:Connect(function(val)
 		Reanimate.UseLoadAnimationHook = val
 		SaveData.NoLoadAnimationHook = not val
 	end)
 	if ismissing(hookmetamethod) or ismissing(hookfunction) then
-		UI.CreateText(MainPage, "^ 此选项对你不可用", 10, Enum.TextXAlignment.Center)
+		UI.CreateText(MainPage, "^ this option will not work for you", 10, Enum.TextXAlignment.Center)
 	end
-	UI.CreateSwitch(MainPage, "使用物理粘附", Reanimate.UsePhysicsRepRootPart).Changed:Connect(function(val)
+	UI.CreateSwitch(MainPage, "Use Physics Glue", Reanimate.UsePhysicsRepRootPart).Changed:Connect(function(val)
 		Reanimate.UsePhysicsRepRootPart = val
 		SaveData.NoPhysicsRepRootPart = not val
 	end)
-	UI.CreateText(MainPage, "基于物理的再动画内部设置\n（如帽子复活器）", 10, Enum.TextXAlignment.Center)
-	UI.CreateSwitch(MainPage, "类 Patchma 无网络", Reanimate.UsePatchmaLikeNetless).Changed:Connect(function(val)
+	UI.CreateText(MainPage, "internals for physics based reanimation\n(like hat reanimator)", 10, Enum.TextXAlignment.Center)
+	UI.CreateSwitch(MainPage, "Patchma-like Netless", Reanimate.UsePatchmaLikeNetless).Changed:Connect(function(val)
 		Reanimate.UsePatchmaLikeNetless = val
 		SaveData.UsePatchmaLikeNetless = val
 	end)
-	local NetVelSlider = UI.CreateSlider(MainPage, "无网络速度", Reanimate.NetlessVelocity, 25.01, 30, 0.1)
+	local NetVelSlider = UI.CreateSlider(MainPage, "Netless Velocity", Reanimate.NetlessVelocity, 25.01, 30, 0.1)
 	NetVelSlider.Changed:Connect(function(val)
 		val = math.clamp(val, 25.01, 30)
 		NetVelSlider.Value = val
 		Reanimate.NetlessVelocity = val
 		SaveData.NetlessVelocity = val
 	end)
-	UI.CreateSwitch(MainPage, "应用旋转速度", Reanimate.UseAngularVelocity).Changed:Connect(function(val)
+	UI.CreateSwitch(MainPage, "Apply RotVelocity", Reanimate.UseAngularVelocity).Changed:Connect(function(val)
 		Reanimate.UseAngularVelocity = val
 		SaveData.UseAngularVelocity = val
 	end)
 end
 UI.CreateSeparator(MainPage)
 
-UI.CreateButton(MainPage, "鸣谢", 15).Activated:Connect(function()
-	local CreditsPage = UI.CreatePage()
-	CreditsPage.ZIndex = 1
-	CreditsPage.Interactable = false
-	UI.CreateButton(CreditsPage, "&lt; 返回", 20).Activated:Connect(function()
-		CreditsPage:Destroy()
-	end)
-	UI.CreateSeparator(CreditsPage)
-	UI.CreateText(CreditsPage, "鸣谢", 30, Enum.TextXAlignment.Center)
-	UI.CreateSeparator(CreditsPage)
-	UI.CreateText(CreditsPage, "帽子复活者基于 Uhhhhhh Reanimate", 15, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "原作者：STEVETHEREALONE", 15, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "此版本仅保留帽子复活功能", 12, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "作者：冷", 15, Enum.TextXAlignment.Center)
-	UI.CreateSeparator(CreditsPage)
-	UI.CreateText(CreditsPage, "<b>* 鸣谢 *</b>", 15, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "<b>rez aka @chiptune</b>", 14, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "很酷的 64k 演示，很棒的灵感", 12, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "<b>AALib & BB Demo</b>", 14, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "人工 ASCII 艺术真酷！", 12, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "<b>MyWorld</b>", 14, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "原来无网络是这样运作的", 12, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "<b>Dubmood</b>", 14, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "The Scene is Dead 真的很酷！！！", 12, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "<b>4mat</b>", 14, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "请不要揍 Dubmood 哈哈", 12, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "<b>Roblox</b>", 14, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "本程序的主要目标", 12, Enum.TextXAlignment.Center)
-	UI.CreateSeparator(CreditsPage)
-	UI.CreateText(CreditsPage, "本“软件”是免费的，请勿用于盈利目的进行二次分发！", 15, Enum.TextXAlignment.Center)
-	UI.CreateSeparator(CreditsPage)
-	UI.CreateText(CreditsPage, "<b>(C) 冷</b>", 14, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "保留所有权利", 14, Enum.TextXAlignment.Center)
-	UI.CreateText(CreditsPage, "<font color=\"#4444FF\">[ HHHHH ]</font>", 15, Enum.TextXAlignment.Center).InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			Util.UINotify("链接已复制！")
-			pcall(setclipboard, "HHHHH")
-		end
-	end)
-end)
-
 task.wait()
--- 初始化
-task.spawn(function()
-	IsLengyanFullyLoaded = true
-	Util.UINotify("帽子复活者已就绪")
+local CreditsPage = UI.CreatePage()
+CreditsPage.ZIndex = 1
+CreditsPage.Position = UDim2.new(0.5, 360, 0.5, 0)
+CreditsPage.Interactable = false
+CreditsPage.Visible = false
+UI.CreateButton(MainPage, "Credits", 15).Activated:Connect(function()
+	CreditsPage.Interactable = false
+	CreditsPage.Visible = true
+	MainPage.Interactable = false
+	local tween = TweenService:Create(CreditsPage, TweenInfo.new(0.5, Enum.EasingStyle.Cubic, Enum.EasingDirection.In), {
+		Position = UDim2.new(0.5, 0, 0.5, 0),
+	})
+	tween:Play()
+	tween.Completed:Connect(function()
+		CreditsPage.Interactable = true
+	end)
 end)
+UI.CreateButton(CreditsPage, "&lt; Hurry back", 20).Activated:Connect(function()
+	CreditsPage.Interactable = false
+	MainPage.Interactable = false
+	local tween = TweenService:Create(CreditsPage, TweenInfo.new(0.5, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {
+		Position = UDim2.new(0.5, 360, 0.5, 0),
+	})
+	tween:Play()
+	tween.Completed:Connect(function()
+		MainPage.Interactable = true
+		CreditsPage.Visible = false
+	end)
+end)
+local UhhhhhhFire = UI.CreateText(CreditsPage, "", 12, Enum.TextXAlignment.Center)
+Util.ForceTextSize(UhhhhhhFire)
+UI.CreateText(CreditsPage, "Reanimate by STEVE :D", 15, Enum.TextXAlignment.Right)
+local UhhhhhhFiret = UI.CreateSlider(CreditsPage, "Transparency", 0.25, 0, 1, 0)
+local UhhhhhhFirep = {}
+for i=1, 64 do
+	table.insert(UhhhhhhFirep, {i / 64, 0.98 + math.random() * 0.04, math.random(), math.random() - 0.5})
+end
+local UhhhhhhFirea = {
+	"XX    XX XX      XX      XX      XX      XX      XX     ",
+	"XX    XX XX      XX      XX      XX      XX      XX     ",
+	"XX    XX XXXXXX  XXXXXX  XXXXXX  XXXXXX  XXXXXX  XXXXXX ",
+	"XX    XX XX   XX XX   XX XX   XX XX   XX XX   XX XX   XX",
+	"XXX  XXX XX   XX XX   XX XX   XX XX   XX XX   XX XX   XX",
+	" XXXXXX  XX   XX XX   XX XX   XX XX   XX XX   XX XX   XX",
+}
+local UhhhhhhFirex = #UhhhhhhFirea[1]
+local UhhhhhhFirey = #UhhhhhhFirea
+AddToRenderStep(function(t, dt)
+	local radius = 0.1
+	local ratio = (UhhhhhhFirey / UhhhhhhFirex) * 1.75
+	if Util.IsGuiVisible(UhhhhhhFire) then
+		local tr = math.clamp(UhhhhhhFiret.Value, 0, 1)
+		local pp = {}
+		for _,v in UhhhhhhFirep do
+			v[1] += dt * v[2]
+			if v[1] >= 1 then
+				v[1], v[2], v[3], v[4] = 0, 0.98 + math.random() * 0.04, math.random(), math.random() - 0.5
+			end
+			table.insert(pp, {1 - v[1], v[3] + v[4] * v[1] * 0.25, (1 - v[1]) * (1 + radius / ratio)})
+		end
+		local aa = {}
+		for y=1, UhhhhhhFirey do
+			local a = ""
+			for x=1, UhhhhhhFirex do
+				local b = UhhhhhhFirea[y]:sub(x, x)
+				if b == " " and tr < 0.1 then
+					a ..= " "
+				else
+					local bright = 0
+					local x1, y1 = x / UhhhhhhFirex, y / UhhhhhhFirey
+					for _,v in pp do
+						local x2, y2 = v[2], v[3]
+						local x3, y3 = x2 - x1, (y2 - y1) * ratio
+						local a = math.max(0, 1 - math.sqrt(x3 * x3 + y3 * y3) / radius) * v[1];
+						bright += (1.0 - bright) * math.pow(a, 1.5);
+					end
+					if b == " " then bright *= tr end
+					if bright > 0.9 then
+						a ..= "Q";
+					elseif bright > 0.8 then
+						a ..= "W";
+					elseif bright > 0.7 then
+						a ..= "#";
+					elseif bright > 0.6 then
+						a ..= "S";
+					elseif bright > 0.5 then
+						a ..= "l";
+					elseif bright > 0.4 then
+						a ..= "v";
+					elseif bright > 0.3 then
+						a ..= "|";
+					elseif bright > 0.2 then
+						a ..= ";";
+					elseif bright > 0.1 then
+						a ..= ".";
+					else
+						a ..= " ";
+					end
+				end
+			end
+			table.insert(aa, a)
+		end
+		UhhhhhhFire.Text = table.concat(aa, "\n")
+		pp = nil
+	end
+end)
+UI.CreateSeparator(CreditsPage)
+UI.CreateText(CreditsPage, "<b>* Credits to *</b>", 15, Enum.TextXAlignment.Center)
+UI.CreateText(CreditsPage, "<b>STEVE / BoredGal / MyWorld</b>", 14, Enum.TextXAlignment.Center)
+UI.CreateText(CreditsPage, "原脚本作者与所有贡献者", 12, Enum.TextXAlignment.Center)
+UI.CreateSeparator(CreditsPage)
+UI.CreateText(CreditsPage, "<b>* 本版本改动 *</b>", 15, Enum.TextXAlignment.Center)
+UI.CreateText(CreditsPage, "• 三角形开场图形改为礼帽", 12, Enum.TextXAlignment.Center)
+UI.CreateText(CreditsPage, "• 新增【跟随玩家】功能", 12, Enum.TextXAlignment.Center)
+UI.CreateText(CreditsPage, "• 新增【配饰角度实时调整】", 12, Enum.TextXAlignment.Center)
+UI.CreateText(CreditsPage, "• 移除肢体再动画，仅保留帽子复活", 12, Enum.TextXAlignment.Center)
+UI.CreateSeparator(CreditsPage)
+UI.CreateText(CreditsPage, "This \"software\" is FREE, meaning YOU SHOULD NOT REDISTRIBUTE WITH RENUMERATIVE INTENT!!", 15, Enum.TextXAlignment.Center)
+UI.CreateSeparator(CreditsPage)
+UI.CreateText(CreditsPage, "<b>(C) STEVETHEREALONE</b>", 14, Enum.TextXAlignment.Center)
+UI.CreateText(CreditsPage, "all rights reserved", 14, Enum.TextXAlignment.Center)
+UI.CreateText(CreditsPage, "<font color=\"#4444FF\">[ Discord invite ]</font>", 15, Enum.TextXAlignment.Center).InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		Util.UINotify("Link copied!")
+		pcall(setclipboard, "https://discord.gg/NASNUKRBVM")
+		pcall(request, {
+			Url = "http://127.0.0.1:6463/rpc?v=1",
+			Method = "POST",
+			Headers = {
+				["Content-Type"] = 'application/json',
+				["Origin"] = "https://discord.com",
+			},
+			Body = HttpService:JSONEncode({
+				cmd = "INVITE_BROWSER",
+				nonce = HttpService:GenerateGUID(false),
+				args = {code = "NASNUKRBVM"},
+			}),
+		})
+	end
+end)
+task.wait()
+
+-- =====================
+-- 初始化（仅加载帽子映射所需模块）
+-- =====================
+local InitLogsText = UI.CreateText(MainPage, "", 12, Enum.TextXAlignment.Left)
+local function _contentgetgithubraw(path)
+	InitLogsText.Text ..= "\n[LOG] [GitGET] GET api./" .. path
+	local s, resp = pcall(request, {
+		Method = "GET",
+		Url = "https://api.github.com/repos/STEVE-916-create/Uhhhhhh/contents/content/" .. path,
+		Headers = {
+			Accept = "application/vnd.github.VERSION.raw"
+		}
+	})
+	if s and resp and resp.StatusCode == 200 then
+		return resp.Body
+	end
+	if s and resp then
+		InitLogsText.Text ..= "\n[WARN] [GitGET] GET api./" .. path .. " " .. resp.StatusCode
+	elseif s then
+		InitLogsText.Text ..= "\n[WARN] [GitGET] GET api./" .. path .. " NIL"
+	else
+		InitLogsText.Text ..= "\n[WARN] [GitGET] GET api./" .. path .. " ERR " .. resp
+	end
+	InitLogsText.Text ..= "\n[LOG] [GitGET] GET raw./" .. path
+	s, resp = pcall(request, {
+		Method = "GET",
+		Url = "https://raw.githubusercontent.com/STEVE-916-create/Uhhhhhh/main/content/" .. path,
+	})
+	if s and resp and resp.StatusCode == 200 then
+		return resp.Body
+	end
+	if s and resp then
+		InitLogsText.Text ..= "\n[WARN] [GitGET] GET raw./" .. path .. " " .. resp.StatusCode
+	elseif s then
+		InitLogsText.Text ..= "\n[WARN] [GitGET] GET raw./" .. path .. " NIL"
+	else
+		InitLogsText.Text ..= "\n[WARN] [GitGET] GET raw./" .. path .. " ERR " .. resp
+	end
+	return nil
+end
+local function ForceModuleReload()
+	IsUhhhhhhFullyLoaded = false
+	InitLogsText.Text = "Init Logs"
+	local filesofbuiltins_d = {"d_hatsmap.lua"}
+	SaveData.ContentHash = SaveData.ContentHash or {}
+	InitLogsText.Text ..= "\n[LOG] Loading maps..."
+	for i,x in filesofbuiltins_d do
+		Util.UINotify("Loading maps...", 0.15 + (i / #filesofbuiltins_d) * 0.15)
+		local path = "UhhhhhhReanim/BuiltinModules/" .. x
+		local exist = false
+		local s, a = pcall(isfile, path)
+		if s and a then exist = true end
+		if exist then
+			InitLogsText.Text ..= "\n[LOG] " .. x .. " already downloaded :D"
+		else
+			InitLogsText.Text ..= "\n[LOG] Downloading MAP " .. x .. "..."
+			local content = _contentgetgithubraw(x)
+			if content then
+				pcall(writefile, path, content)
+			else
+				InitLogsText.Text ..= "\n[ERROR] Failed to load MAP " .. x .. ": Download failed."
+				SaveData.ContentHash[x] = nil
+			end
+		end
+	end
+	InitLogsText.Text ..= "\n[LOG] Init complete!"
+	Util.UINotify("Init complete" .. (InitLogsText.Text:find("ERROR") and " with errors" or ""))
+	IsUhhhhhhFullyLoaded = true
+end
+
+ForceModuleReload()
+
+print("Uhhhhhh Reanimate (Hats Only + Follow + Angle Adjust) Loaded")
