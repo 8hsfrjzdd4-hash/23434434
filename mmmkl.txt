@@ -1,6 +1,5 @@
 -- ============================================================
 -- Lengyan UI Library · v1.0
--- 帽子复活者 UI 库（含开场动画 + 窗口框架 + 控件）
 -- ============================================================
 
 local Debris = cloneref and cloneref(game:GetService("Debris")) or game:GetService("Debris")
@@ -120,7 +119,7 @@ downloadAsset("lightinursoul.graphic.png")
 downloadAsset("dm_keygen18.ft2.mp3")
 
 -- ============================================================
--- 帽子（已改成三角形）
+-- 三角形帽子
 -- ============================================================
 Util.MakeHat = function(color, dur)
 	dur = dur or 8
@@ -133,40 +132,51 @@ Util.MakeHat = function(color, dur)
 
 	local grey = math.max(color.R, color.G, color.B) * 0.5
 
-	-- 三角：多层横条堆叠
-	local layers = 10
-	local bars = {}
-	local barStrokes = {}
+	local triW = 0.42
+	local triH = 0.52
+	local thickness = 0.025
 
-	for i = 1, layers do
-		local t = (i - 1) / (layers - 1)   -- 0 底部 → 1 顶部
-		local w = (1 - t) * 0.52 + 0.03
-		local h = 0.52 / layers
-		local y = (i - 1) * h
+	-- 左边斜边
+	local leftBar = Util.Instance("Frame", pivot)
+	leftBar.AnchorPoint = Vector2.new(0.5, 0.5)
+	leftBar.Position = UDim2.new(0.5 - triW * 0.25, 0, 0.78 - triH * 0.5, 0)
+	leftBar.Size = UDim2.new(thickness, 0, math.sqrt(triW * triW + triH * triH) * 0.98, 0)
+	leftBar.BackgroundColor3 = Color3.new(grey, grey, grey)
+	leftBar.BorderSizePixel = 0
+	leftBar.Rotation = -math.deg(math.atan2(triH, triW * 0.5))
 
-		local bar = Util.Instance("Frame", pivot)
-		bar.AnchorPoint = Vector2.new(0.5, 1)
-		bar.Position = UDim2.new(0.5, 0, 0.78 - y, 0)
-		bar.Size = UDim2.new(w, 0, h * 1.05, 0)
-		bar.BackgroundColor3 = Color3.new(grey, grey, grey)
-		bar.BorderSizePixel = 0
-		table.insert(bars, bar)
+	-- 右边斜边
+	local rightBar = Util.Instance("Frame", pivot)
+	rightBar.AnchorPoint = Vector2.new(0.5, 0.5)
+	rightBar.Position = UDim2.new(0.5 + triW * 0.25, 0, 0.78 - triH * 0.5, 0)
+	rightBar.Size = UDim2.new(thickness, 0, math.sqrt(triW * triW + triH * triH) * 0.98, 0)
+	rightBar.BackgroundColor3 = Color3.new(grey, grey, grey)
+	rightBar.BorderSizePixel = 0
+	rightBar.Rotation = math.deg(math.atan2(triH, triW * 0.5))
 
-		-- 描边
-		local stroke = Util.Instance("UIStroke", bar)
-		stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-		stroke.LineJoinMode = Enum.LineJoinMode.Round
-		stroke.Thickness = 1
-		stroke.Color = Color3.new(grey, grey, grey)
-		table.insert(barStrokes, stroke)
-	end
+	-- 底边
+	local bottomBar = Util.Instance("Frame", pivot)
+	bottomBar.AnchorPoint = Vector2.new(0.5, 0.5)
+	bottomBar.Position = UDim2.new(0.5, 0, 0.78, 0)
+	bottomBar.Size = UDim2.new(triW, 0, thickness, 0)
+	bottomBar.BackgroundColor3 = Color3.new(grey, grey, grey)
+	bottomBar.BorderSizePixel = 0
 
-	for _, bar in ipairs(bars) do
-		TweenService:Create(bar, TweenInfo.new(dur, Enum.EasingStyle.Linear), { BackgroundColor3 = color }):Play()
-	end
-	for _, stroke in ipairs(barStrokes) do
-		TweenService:Create(stroke, TweenInfo.new(dur, Enum.EasingStyle.Linear), { Color = color }):Play()
-	end
+	-- 内部填充
+	local innerFill = Util.Instance("Frame", pivot)
+	innerFill.AnchorPoint = Vector2.new(0.5, 0.5)
+	innerFill.Position = UDim2.new(0.5, 0, 0.78 - triH * 0.33, 0)
+	innerFill.Size = UDim2.new(triW * 0.55, 0, triH * 0.55, 0)
+	innerFill.BackgroundColor3 = Color3.new(grey, grey, grey)
+	innerFill.BackgroundTransparency = 0.65
+	innerFill.BorderSizePixel = 0
+	Util.Instance("UICorner", innerFill).CornerRadius = UDim.new(0.15, 0)
+
+	-- 颜色渐变
+	TweenService:Create(leftBar, TweenInfo.new(dur, Enum.EasingStyle.Linear), { BackgroundColor3 = color }):Play()
+	TweenService:Create(rightBar, TweenInfo.new(dur, Enum.EasingStyle.Linear), { BackgroundColor3 = color }):Play()
+	TweenService:Create(bottomBar, TweenInfo.new(dur, Enum.EasingStyle.Linear), { BackgroundColor3 = color }):Play()
+	TweenService:Create(innerFill, TweenInfo.new(dur, Enum.EasingStyle.Linear), { BackgroundColor3 = color }):Play()
 
 	return pivot
 end
@@ -548,8 +558,8 @@ function UI.CreateButton(parent, text, size)
 
 	local function update()
 		local x = parent.AbsoluteSize.X
-		local size = TextService:GetTextSize(ButtonText.ContentText, ButtonText.TextSize, ButtonText.Font, Vector2.new(x - margin * 2, math.huge))
-		Container.Size = UDim2.new(1, 0, 0, size.Y + margin * 2)
+		local sz = TextService:GetTextSize(ButtonText.ContentText, ButtonText.TextSize, ButtonText.Font, Vector2.new(x - margin * 2, math.huge))
+		Container.Size = UDim2.new(1, 0, 0, sz.Y + margin * 2)
 	end
 	ButtonText.Text = text
 	update()
@@ -577,7 +587,6 @@ function UI.CreateSeparator(parent)
 	return Sep
 end
 
--- 开关
 function UI.CreateToggle(parent, text, default, callback)
 	default = default or false
 	callback = callback or function() end
@@ -656,7 +665,6 @@ function UI.CreateToggle(parent, text, default, callback)
 	}
 end
 
--- 滑块
 function UI.CreateSlider(parent, text, min, max, default, callback)
 	min = min or 0
 	max = max or 100
@@ -779,7 +787,6 @@ function UI.CreateSlider(parent, text, min, max, default, callback)
 	}
 end
 
--- 下拉框
 function UI.CreateDropdown(parent, text, options, callback)
 	options = options or {}
 	callback = callback or function() end
@@ -870,7 +877,6 @@ function UI.CreateDropdown(parent, text, options, callback)
 				Label.Text = text .. ": " .. opt
 				currentValue = opt
 				pcall(callback, opt)
-				-- 关闭
 				isOpen = false
 				Arrow.Text = "▼"
 				TweenService:Create(Container, TweenInfo.new(0.2), { Size = UDim2.new(1, 0, 0, 36) }):Play()
@@ -909,7 +915,6 @@ function UI.CreateDropdown(parent, text, options, callback)
 	}
 end
 
--- 文本框
 function UI.CreateTextbox(parent, placeholder, callback)
 	callback = callback or function() end
 
@@ -952,7 +957,6 @@ function UI.CreateTextbox(parent, placeholder, callback)
 	}
 end
 
--- 标签
 function UI.CreateLabel(parent, text, size)
 	local margin = 5
 	local Container = Util.Instance("Frame", parent)
@@ -1088,7 +1092,6 @@ function Window:_createUI(config)
 		Scroll.ScrollBarImageColor3 = UITextColor.Value
 	end, Scroll)
 
-	-- 关闭/最小化
 	local MainWindowClosed = false
 	local MainWindowTweening = false
 	local MainWindowPosOpen = nil
@@ -1135,7 +1138,6 @@ function Window:_createUI(config)
 		WindowContent.Interactable = not MainWindowClosed
 	end)
 
-	-- 拖动
 	local dragref = nil
 	local offset = Vector2.new(0, 0)
 	TopBarFrame.InputBegan:Connect(function(input)
